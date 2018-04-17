@@ -6,7 +6,7 @@ Progressive Calibration Networks (PCN) is an accurate rotation-invariant face de
 
 Some detection results can be viewed in the following illustrations:
 
-<img src='result/demo.png' width=800 height=400>
+<img src='result/demo.png' width=800 height=410>
 
 <img src='result/1.gif' width=800 height=460>
 
