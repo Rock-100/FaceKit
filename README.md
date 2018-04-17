@@ -6,15 +6,15 @@ Progressive Calibration Networks (PCN) is an accurate rotation-invariant face de
 
 Some detection results can be viewed in the following illustrations:
 
-<img src='result/demo.png' width=600 height=330>
+<img src='result/demo.png' width=800 height=400>
 
-<img src='result/1.gif' width=600 height=350>
+<img src='result/1.gif' width=800 height=460>
 
-<img src='result/2.gif' width=600 height=350>
+<img src='result/2.gif' width=800 height=460>
 
 PCN is designed aiming for low time-cost. We compare PCN's speed with other rotation-invariant face detectors' on standard VGA images(640x480) with 40x40 minimum face size. The detectors run on a desktop computer with 3.4GHz CPU, GTX Titan X. The speed results together with the recall rate at 100 false positives on multi-oriented FDDB are shown in the following table. Detailed experiment settings can be found in our paper.
 
-<img src='result/result.png' width=710 height=140>
+<img src='result/result.png' width=800 height=150>
 
 ### Usage
 
