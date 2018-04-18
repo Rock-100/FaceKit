@@ -36,6 +36,12 @@ Smooth the face boxes or not (smooth = true or false, recommend using it on vide
 
 See [picture.cpp](code/picture.cpp) and [video.cpp](code/video.cpp) for details. If you want to reproduce the results on FDDB, set `size` and `factor` as 20 and 1.414 respectively, or you can adjust them according to your application.
 
+### Links
+
+* [arxiv](https://arxiv.org/pdf/1804.06039.pdf)
+
+* [ppt](PCN.pdf)
+
 ### Prerequisites
 
 * Linux
