@@ -40,6 +40,8 @@ See [picture.cpp](code/picture.cpp) and [video.cpp](code/video.cpp) for details.
 
 * [arxiv](https://arxiv.org/pdf/1804.06039.pdf)
 
+* [ppt](PCN.pdf)
+
 ### Prerequisites
 
 * Linux
