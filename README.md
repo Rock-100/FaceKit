@@ -36,7 +36,7 @@ Smooth the face boxes or not (smooth = true or false, recommend using it on vide
 
 See [picture.cpp](code/picture.cpp) and [video.cpp](code/video.cpp) for details. If you want to reproduce the results on FDDB, set `size` and `factor` as 20 and 1.414 respectively, or you can adjust them according to your application.
 
-Compile and run the demo.
+Compile and run the demo:
 ```Shell
 cd $PCN_ROOT/code
 # You should set "CAFFEROOT" first. 
