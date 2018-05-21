@@ -1,6 +1,6 @@
 ***New***
 
- - 2018.05.21: A fast version of PCN is released.
+ - 2018.05.21: A fast version of PCN with smaller networks is released.
 
 
 # Real-Time Rotation-Invariant Face Detection with Progressive Calibration Networks
