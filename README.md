@@ -38,7 +38,7 @@ See [picture.cpp](code/picture.cpp) and [video.cpp](code/video.cpp) for details.
 
 Compile and run the demo:
 ```Shell
-cd $PCN_ROOT/code
+cd $PCN_ROOT/code/PCN or cd $PCN_ROOT/code/FastPCN
 # You should set "CAFFEROOT" in compile.sh and run.sh first. 
 sh compile.sh picture/video
 sh run.sh picture/video
