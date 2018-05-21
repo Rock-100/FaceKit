@@ -57,7 +57,7 @@ sh run.sh picture/video
 ### Prerequisites
 
 * Linux
-* Caffe (recommend using OpenBLAS)
+* Caffe (recommend using OpenBLAS, compile caffe mannully or refer to [this docker image](https://github.com/Edwardmark/caffe-docker))
 * OpenCV (2.4.10, or other compatible version)
 
 
