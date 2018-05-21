@@ -1,10 +1,10 @@
-#include "PCN.h"
+#include "FastPCN.h"
 
 int main()
 {
-    PCN detector("PCN.dat");
+    FastPCN detector("FastPCN.caffemodel");
     detector.SetMinFaceSize(48);
-    detector.SetScoreThresh(0.97);
+    detector.SetScoreThresh(0.95);
     detector.SetImagePyramidScaleFactor(1.414);
     detector.SetVideoSmooth(true);
 

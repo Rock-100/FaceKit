@@ -2,15 +2,15 @@
 
 int main()
 {
-    PCN detector("PCN.dat");
+    PCN detector("PCN.caffemodel");
     detector.SetMinFaceSize(48);
     detector.SetScoreThresh(0.97);
     detector.SetImagePyramidScaleFactor(1.414);
     detector.SetVideoSmooth(false);
 
-    for (int i = 1; i <= 18; i++)
+    for (int i = 1; i <= 16; i++)
     {
-        cv::Mat img = cv::imread("imgs/" + std::to_string(i) + ".jpg");
+        cv::Mat img = cv::imread("../imgs/" + std::to_string(i) + ".jpg");
         cv::TickMeter tm;
         tm.reset();
         tm.start();
