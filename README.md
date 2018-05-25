@@ -1,11 +1,7 @@
-***New***
-
- - 2018.05.21: A fast version of PCN with smaller networks is released.
-
 
 # Real-Time Rotation-Invariant Face Detection with Progressive Calibration Networks
 
-Progressive Calibration Networks (PCN) is an accurate rotation-invariant face detector running at real-time speed on CPU, published in CVPR 2018. This is a binary library for PCN. In this implementation, we don't use network quantization or compression, and the program runs on CPU with a single thread.
+Progressive Calibration Networks (PCN) is an accurate rotation-invariant face detector running at real-time speed on CPU, published in CVPR 2018. This is a binary library for PCN (the networks in FastPCN is smaller than PCN). In this implementation, we don't use network quantization or compression, and the program runs on CPU with a single thread.
 
 ### Results
 
