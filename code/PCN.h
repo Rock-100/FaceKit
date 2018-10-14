@@ -11,15 +11,16 @@
 #include "opencv2/opencv.hpp"
 #include "caffe/caffe.hpp"
 
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
+#define M_PI  3.14159265358979323846
+#define CLAMP(x, l, u)  ((x) < (l) ? (l) : ((x) > (u) ? (u) : (x)))
+#define EPS  1e-5
 
 struct Window
 {
     int x, y, width;
     float angle, score;
-    Window(int x_, int y_, int w_, float a_, float s_) : x(x_), y(y_), width(w_), angle(a_), score(s_)
+    Window(int x_, int y_, int w_, float a_, float s_)
+        : x(x_), y(y_), width(w_), angle(a_), score(s_)
     {}
 };
 
@@ -63,9 +64,9 @@ void DrawFace(cv::Mat img, Window face)
 class PCN
 {
 public:
-    PCN(std::string model);
+    PCN(std::string model, std::string net1, std::string net2, std::string net3);
     void SetMinFaceSize(int minFace);
-    void SetScoreThresh(float thresh);
+    void SetScoreThresh(float thresh1, float thresh2, float thresh3);
     void SetImagePyramidScaleFactor(float factor);
     void SetVideoSmooth(bool smooth);
     std::vector<Window> DetectFace(cv::Mat img);
