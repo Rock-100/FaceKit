@@ -1,7 +1,7 @@
 
 # Real-Time Rotation-Invariant Face Detection with Progressive Calibration Networks
 
-Progressive Calibration Networks (PCN) is an accurate rotation-invariant face detector running at real-time speed on CPU. This is a binary library for PCN (the networks in FastPCN is smaller than PCN). In this implementation, we don't use network quantization or compression, and the program runs on CPU with a single thread.
+Progressive Calibration Networks (PCN) is an accurate rotation-invariant face detector running at real-time speed on CPU. This is an implementation for PCN.
 
 ### Results
 
@@ -27,20 +27,21 @@ Set scaling factor of image pyramid (1.4 <= `factor` <= 1.6)
   
 - `detector.SetImagePyramidScaleFactor(factor);`
   
-Set score threshold of detected faces (0 <= `thresh` <= 1)
+Set score threshold of detected faces (0 <= `thresh1`, `thresh2`, `thresh3` <= 1)
   
-- `detector.SetScoreThresh(thresh);`
+- `detector.SetScoreThresh(thresh1, thresh2, thresh3);`
 
 Smooth the face boxes or not (smooth = true or false, recommend using it on video to get stabler face boxes)
   
 - `detector.SetVideoSmooth(smooth);`
 
-See [picture.cpp](code/picture.cpp) and [video.cpp](code/video.cpp) for details. If you want to reproduce the results on FDDB, set `size` and `factor` as 20 and 1.414 respectively, or you can adjust them according to your application.
+See [picture.cpp](code/picture.cpp) and [video.cpp](code/video.cpp) for details. If you want to reproduce the results on FDDB, please run [fddb.cpp](code/fddb.cpp).
 
 Compile and run the demo:
 ```Shell
-cd $PCN_ROOT/code/PCN or cd $PCN_ROOT/code/FastPCN
+cd $PCN_ROOT/code
 # You should set "CAFFEROOT" in compile.sh and run.sh first. 
+sh lib.sh
 sh compile.sh picture/video
 sh run.sh picture/video
 ```
@@ -52,7 +53,7 @@ sh run.sh picture/video
 ### Prerequisites
 
 * Linux
-* Caffe (recommend using OpenBLAS, compile caffe mannully or refer to [this docker image](https://github.com/Edwardmark/caffe-docker))
+* Caffe
 * OpenCV (2.4.10, or other compatible version)
 
 
