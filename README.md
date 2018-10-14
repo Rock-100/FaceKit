@@ -35,7 +35,7 @@ Smooth the face boxes or not (smooth = true or false, recommend using it on vide
   
 - `detector.SetVideoSmooth(smooth);`
 
-See [picture.cpp](code/picture.cpp) and [video.cpp](code/video.cpp) for details. If you want to reproduce the results on FDDB, please run [fddb.cpp](code/fddb.cpp).
+See [picture.cpp](code/picture.cpp) and [video.cpp](code/video.cpp) for details. If you want to reproduce the results on FDDB, please run [fddb.cpp](code/fddb.cpp). You can rotate the images in FDDB to get FDDB-left, FDDB-right, and FDDB-down, then test PCN on them respectively. 
 
 Compile and run the demo:
 ```Shell
