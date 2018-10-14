@@ -20,17 +20,18 @@ int main()
     {
         std::cout << line << std::endl;
         cv::Mat img = cv::imread(dataPath + line + ".jpg");
+
         long t0 = cv::getTickCount();
         std::vector<Window> faces = detector.DetectFace(img);
         long t1 = cv::getTickCount();
         time += (t1 - t0) / cv::getTickFrequency();
         total += 1;
-        int num = static_cast<int32_t>(faces.size());
         std::cout << "count: " << total << "  ave time: " <<
                   time / total << "s" << std::endl;
+                  
         out << line << std::endl;
-        out << num << std::endl;
-        for (int i = 0; i < num; i++)
+        out << faces.size() << std::endl;
+        for (int i = 0; i < faces.size(); i++)
         {
             if (abs(faces[i].angle) < 45 or abs(faces[i].angle) > 135)
                 out << faces[i].x << " " << faces[i].y - 0.1 * faces[i].width << " " <<
