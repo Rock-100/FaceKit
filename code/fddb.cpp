@@ -30,7 +30,7 @@ int main()
                   time / total << "s" << std::endl;
         out << line << std::endl;
         out << num << std::endl;
-        for (int32_t i = 0; i < num; i++)
+        for (int i = 0; i < num; i++)
         {
             if (abs(faces[i].angle) < 45 or abs(faces[i].angle) > 135)
                 out << faces[i].x << " " << faces[i].y - 0.1 * faces[i].width << " " <<
