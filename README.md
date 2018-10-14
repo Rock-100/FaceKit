@@ -1,4 +1,5 @@
-<font color=Crimson size=72>2018.10.14 Source code is available！！！</font>
+# News
+2018.10.14 Source code is available!!!
 
 # Real-Time Rotation-Invariant Face Detection with Progressive Calibration Networks
 
