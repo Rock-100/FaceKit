@@ -40,10 +40,10 @@ See [picture.cpp](code/picture.cpp) and [video.cpp](code/video.cpp) for details.
 Compile and run the demo:
 ```Shell
 cd $PCN_ROOT/code
-# You should set "CAFFEROOT" in compile.sh and run.sh first. 
+# You should set "CAFFEROOT" in lib.sh, compile.sh, and run.sh first. 
 sh lib.sh
-sh compile.sh picture/video
-sh run.sh picture/video
+sh compile.sh picture/video/fddb
+sh run.sh picture/video/fddb
 ```
 
 ### Links
