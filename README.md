@@ -37,7 +37,7 @@ Smooth the face boxes or not (smooth = true or false, recommend using it on vide
   
 - `detector.SetVideoSmooth(smooth);`
 
-See [picture.cpp](code/picture.cpp) and [video.cpp](code/video.cpp) for details. If you want to reproduce the results on FDDB, please run [fddb.cpp](code/fddb.cpp). You can rotate the images in FDDB to get FDDB-left, FDDB-right, and FDDB-down, then test PCN on them respectively. 
+See [picture.cpp](code/picture.cpp) and [video.cpp](code/video.cpp) for details. If you want to reproduce the results on FDDB, please run [fddb.cpp](code/fddb.cpp). You can rotate the images in FDDB to get FDDB-left, FDDB-right, and FDDB-down, then test PCN on them respectively. It is worth mentioning that converting the square results to rectangles or ellipses is helpful to fit the ground-truth data. In this way, better accuracy can be achieved.
 
 Compile and run:
 ```Shell
@@ -58,6 +58,11 @@ sh run.sh picture/video/fddb
 * Caffe
 * OpenCV (2.4.10, or other compatible version)
 
+### FAQs
+
+* How to get faces with different rotation-in-plane angles before training?
+  
+  Please refer to issue [3](https://github.com/Jack-CV/PCN-FaceDetection/issues/3), [7](https://github.com/Jack-CV/PCN-FaceDetection/issues/7), [8](https://github.com/Jack-CV/PCN-FaceDetection/issues/8), [10](https://github.com/Jack-CV/PCN-FaceDetection/issues/10).
 
 ### License
 
