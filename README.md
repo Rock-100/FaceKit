@@ -58,6 +58,10 @@ sh run.sh picture/video/fddb
 * Caffe
 * OpenCV (2.4.10, or other compatible version)
 
+### Other Implementations
+
+* [ncnn](https://github.com/HandsomeHans/PCN-ncnn) (by HandsomeHans)
+
 ### FAQs
 
 * How to get faces with different rotation-in-plane angles before training?
