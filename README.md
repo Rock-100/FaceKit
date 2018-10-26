@@ -5,6 +5,10 @@
 
 Progressive Calibration Networks (PCN) is an accurate rotation-invariant face detector running at real-time speed on CPU. This is an implementation for PCN.
 
+### Other Implementations
+
+* [ncnn](https://github.com/HandsomeHans/PCN-ncnn) (by HandsomeHans)
+
 ### Results
 
 Some detection results can be viewed in the following illustrations:
@@ -58,9 +62,6 @@ sh run.sh picture/video/fddb
 * Caffe
 * OpenCV (2.4.10, or other compatible version)
 
-### Other Implementations
-
-* [ncnn](https://github.com/HandsomeHans/PCN-ncnn) (by HandsomeHans)
 
 ### FAQs
 
