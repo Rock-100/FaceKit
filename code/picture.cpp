@@ -21,9 +21,16 @@ int main()
         std::cout << "Image: " << i << std::endl;
         std::cout << "Time Cost: "<<
                   tm.getTimeMilli() << " ms" << std::endl;
-        for (int i = 0; i < faces.size(); i++)
+        cv::Mat faceImg;
+        for (int j = 0; j < faces.size(); j++)
         {
-            DrawFace(img, faces[i]);
+            cv::Mat tmpFaceImg = CropFace(img, faces[j], 200);
+            faceImg.push_back(tmpFaceImg);
+        }
+        cv::imshow("Faces", faceImg);
+        for (int j = 0; j < faces.size(); j++)
+        {
+            DrawFace(img, faces[j]);
         }
         cv::imshow("PCN", img);
         cv::waitKey();

@@ -61,6 +61,28 @@ void DrawFace(cv::Mat img, Window face)
     DrawLine(img, pointList);
 }
 
+cv::Mat CropFace(cv::Mat img, Window face, int cropSize)
+{
+    int x1 = face.x;
+    int y1 = face.y;
+    int x2 = face.width + face.x - 1;
+    int y2 = face.width + face.y - 1;
+    int centerX = (x1 + x2) / 2;
+    int centerY = (y1 + y2) / 2;
+    cv::Point2f srcTriangle[3];
+    cv::Point2f dstTriangle[3];
+    srcTriangle[0] = RotatePoint(x1, y1, centerX, centerY, face.angle);
+    srcTriangle[1] = RotatePoint(x1, y2, centerX, centerY, face.angle);
+    srcTriangle[2] = RotatePoint(x2, y2, centerX, centerY, face.angle);
+    dstTriangle[0] = cv::Point(0, 0);
+    dstTriangle[1] = cv::Point(0, cropSize - 1);
+    dstTriangle[2] = cv::Point(cropSize - 1, cropSize - 1);
+    cv::Mat rotMat = cv::getAffineTransform(srcTriangle, dstTriangle);
+    cv::Mat ret;
+    cv::warpAffine(img, ret, rotMat, cv::Size(cropSize, cropSize));
+    return ret;
+}
+
 class PCN
 {
 public:
