@@ -63,8 +63,9 @@ sh run.sh picture/video/fddb
 
 ### Other Implementations
 
-* [ncnn](https://github.com/HandsomeHans/PCN-ncnn) (by HandsomeHans)
-* [opencv](https://github.com/richipower/PCN-opencv) (by richipower)
+* [NCNN](https://github.com/HandsomeHans/PCN-ncnn) (by HandsomeHans)
+* [OpenCV](https://github.com/richipower/PCN-opencv) (by richipower)
+* [Windows](https://github.com/imistyrain/PCN-Windows) (by imistyrain)
 
 ### FAQs
 
