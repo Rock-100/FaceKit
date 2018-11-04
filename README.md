@@ -86,7 +86,3 @@ If you find PCN useful in your research, please consider citing:
         Booktitle = {The IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
         Year = {2018}
     }
-
-### Contact
-
-Xuepeng Shi, xuepeng.shi@vipl.ict.ac.cn
