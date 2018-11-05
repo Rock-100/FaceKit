@@ -25,7 +25,7 @@ int main()
         for (int j = 0; j < faces.size(); j++)
         {
             cv::Mat tmpFaceImg = CropFace(img, faces[j], 200);
-            faceImg.push_back(tmpFaceImg);
+            faceImg = MergeImg(faceImg, tmpFaceImg);
         }
         cv::imshow("Faces", faceImg);
         for (int j = 0; j < faces.size(); j++)

@@ -83,6 +83,18 @@ cv::Mat CropFace(cv::Mat img, Window face, int cropSize)
     return ret;
 }
 
+cv::Mat MergeImg(cv::Mat A, cv::Mat B)
+{
+    int totalCols = A.cols + B.cols;
+    int totalRows = std::max(A.rows, B.rows);
+    cv::Mat ret(totalRows, totalCols, CV_8UC3);
+    cv::Mat submat = ret.colRange(0, A.cols);
+    A.copyTo(submat);
+    submat = ret.colRange(A.cols, totalCols);
+    B.copyTo(submat);
+    return ret;
+}
+
 class PCN
 {
 public:
