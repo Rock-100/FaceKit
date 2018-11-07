@@ -28,7 +28,7 @@ int main()
         total += 1;
         std::cout << "count: " << total << "  ave time: " <<
                   time / total << "s" << std::endl;
-                  
+
         out << line << std::endl;
         out << faces.size() << std::endl;
         for (int i = 0; i < faces.size(); i++)
