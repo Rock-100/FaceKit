@@ -1,5 +1,7 @@
 # News
-2018.11.04 [CropFace function](code/PCN.h) released!
+2018.11.04 [CropFace function](code/PCN.h) released! 
+
+<img src='result/cropFace.png' width=800 height=210>
 
 2018.10.14 [Source code](code/) released!
 
