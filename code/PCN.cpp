@@ -109,9 +109,17 @@ std::vector<Window> PCN::DetectFace(cv::Mat img)
             for (int j = 0; j < preList.size(); j++)
             {
                 if (p->IoU(winList[i], preList[j]) > 0.9)
-                    winList[i] = preList[j];
+                {
+                    winList[i].conf = (winList[i].conf + preList[j].conf) / 2;
+                    winList[i].x = preList[j].x;
+                    winList[i].y = preList[j].y;
+                    winList[i].w = preList[j].w;
+                    winList[i].h = preList[j].h;
+                    winList[i].angle = preList[j].angle;
+                }
                 else if (p->IoU(winList[i], preList[j]) > 0.6)
                 {
+                    winList[i].conf = (winList[i].conf + preList[j].conf) / 2;
                     winList[i].x = (winList[i].x + preList[j].x) / 2;
                     winList[i].y = (winList[i].y + preList[j].y) / 2;
                     winList[i].w = (winList[i].w + preList[j].w) / 2;
