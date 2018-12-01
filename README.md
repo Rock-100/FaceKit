@@ -49,8 +49,8 @@ Compile and run:
 cd $PCN_ROOT/code
 # You should set "CAFFEROOT" in lib.sh, compile.sh, and run.sh first. 
 sh lib.sh
-sh compile.sh picture/video/fddb
-sh run.sh picture/video/fddb
+sh compile.sh picture/crop/video/fddb
+sh run.sh picture/crop/video/fddb
 ```
 
 ### Links
