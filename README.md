@@ -16,6 +16,8 @@ Some detection results can be viewed in the following illustrations:
 
 <img src='result/demo.png' width=800 height=410>
 
+<img src='result/3.jpg' width=800 height=475>
+
 <img src='result/1.gif' width=800 height=460>
 
 <img src='result/2.gif' width=800 height=460>
