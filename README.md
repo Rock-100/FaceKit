@@ -1,9 +1,13 @@
 # News
+2019.01.13 [SmoothSkin module](SmoothSkin/) released! (implemented with pure C++, ref: [BilateralFilter](https://ieeexplore.ieee.org/document/710815) and [GuideFilter](https://ieeexplore.ieee.org/document/6319316)) 
+
+<img src='Result/smooth.png' width=800 height=250>
+
 2018.11.04 [CropFace function](code/PCN.h) released! 
 
 <img src='Result/cropFace.png' width=800 height=210>
 
-2018.10.14 [Source code](code/) released!
+2018.10.14 [Source code of PCN](code/) released!
 
 # Real-Time Rotation-Invariant Face Detection with Progressive Calibration Networks
 
