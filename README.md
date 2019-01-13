@@ -52,7 +52,7 @@ See [picture.cpp](code/picture.cpp) and [video.cpp](code/video.cpp) for details.
 
 Compile and run:
 ```Shell
-cd $PCN_ROOT/code
+cd $PCN_ROOT
 # You should set "CAFFEROOT" in lib.sh, compile.sh, and run.sh first. 
 sh lib.sh
 sh compile.sh picture/crop/video/fddb
