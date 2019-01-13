@@ -1,7 +1,7 @@
 # News
 2018.11.04 [CropFace function](code/PCN.h) released! 
 
-<img src='result/cropFace.png' width=800 height=210>
+<img src='Result/cropFace.png' width=800 height=210>
 
 2018.10.14 [Source code](code/) released!
 
@@ -14,17 +14,17 @@ Progressive Calibration Networks (PCN) is an accurate rotation-invariant face de
 
 Some detection results can be viewed in the following illustrations:
 
-<img src='result/demo.png' width=800 height=410>
+<img src='Result/demo.png' width=800 height=410>
 
-<img src='result/3.jpg' width=800 height=475>
+<img src='Result/3.jpg' width=800 height=475>
 
-<img src='result/1.gif' width=800 height=460>
+<img src='Result/1.gif' width=800 height=460>
 
-<img src='result/2.gif' width=800 height=460>
+<img src='Result/2.gif' width=800 height=460>
 
 PCN is designed aiming for low time-cost. We compare PCN's speed with other rotation-invariant face detectors' on standard VGA images(640x480) with 40x40 minimum face size. The detectors run on a desktop computer with 3.4GHz CPU, GTX Titan X. The speed results together with the recall rate at 100 false positives on multi-oriented FDDB are shown in the following table. Detailed experiment settings can be found in our paper. It is worth mentioning that converting the square results to rectangles or ellipses is helpful to fit the ground-truth data. In this way, better accuracy can be achieved. But we do not convert the results here.
 
-<img src='result/result.png' width=800 height=150>
+<img src='Result/result.png' width=800 height=150>
 
 ### Usage
 
