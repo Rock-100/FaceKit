@@ -4,7 +4,7 @@
 
 int main()
 {
-    cv::Mat msrcImage = cv::imread("picture/2.jpg");
+    cv::Mat msrcImage = cv::imread("imgs/2.jpg");
     cv::TickMeter tm;
     Image srcImage;
     srcImage.data = (unsigned char *)malloc(msrcImage.rows * msrcImage.cols * msrcImage.channels() * sizeof(unsigned char));

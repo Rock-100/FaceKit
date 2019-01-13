@@ -12,7 +12,7 @@ int main()
     for (int i = 0; i <= 26; i++)
     {
         cv::Mat img =
-            cv::imread("picture/" + std::to_string(i) + ".jpg");
+            cv::imread("imgs/" + std::to_string(i) + ".jpg");
         cv::TickMeter tm;
         tm.reset();
         tm.start();
