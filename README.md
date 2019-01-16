@@ -1,4 +1,9 @@
 # News
+
+2019.01.16 [Warping](Warping/) released! (ref: [IDW](https://en.wikipedia.org/wiki/Inverse_distance_weighting)) 
+
+<img src='Result/FaceWarping.png' width=800 height=370>
+
 2019.01.13 [SmoothSkin module](SmoothSkin/) released! (implemented with pure C++, ref: [BilateralFilter](https://ieeexplore.ieee.org/document/710815) and [GuideFilter](https://ieeexplore.ieee.org/document/6319316)) 
 
 <img src='Result/smooth.png' width=800 height=250>
