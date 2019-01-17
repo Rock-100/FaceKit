@@ -12,8 +12,18 @@ int main()
     std::vector<cv::Point> endPoint
     {
         cv::Point(140, 313), cv::Point(150, 345), cv::Point(175, 378), cv::Point(205, 400), cv::Point(244, 412),
-        cv::Point(290, 398), cv::Point(325, 376), cv::Point(350, 336), cv::Point(360, 307)
+        cv::Point(290, 398), cv::Point(328, 376), cv::Point(350, 336), cv::Point(360, 307)
     };
+
+    for (int i = 0; i <= 5; i++)
+    {
+        startPoint.push_back(cv::Point(0, input.rows * i / 5));
+        endPoint.push_back(cv::Point(0, input.rows * i / 5));
+
+        startPoint.push_back(cv::Point(input.cols - 1, input.rows * i / 5));
+        endPoint.push_back(cv::Point(input.cols - 1, input.rows * i / 5));
+    }
+
 
     IDW idw;
     idw.SetStartControlPoint(startPoint);
