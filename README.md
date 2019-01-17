@@ -1,6 +1,6 @@
 ### [Face Warping](Warping/)
 
-<img src='Warping/result/FaceWarping.png' width=800 height=370>
+<img src='Warping/result/warping.png' width=800 height=370>
 
 ### [Face Smoothing](SmoothSkin/)
 
