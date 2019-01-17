@@ -2,11 +2,11 @@
 
 <img src='Warping/result/FaceWarping.png' width=800 height=370>
 
-### Face Smoothing
+### [Face Smoothing](SmoothSkin/)
 
 <img src='SmoothSkin/result/smooth.png' width=800 height=250>
 
-### Face Detection
+### [Face Detection](PCN/)
 
 <img src='PCN/result/demo.png' width=800 height=410>
 
