@@ -6,7 +6,7 @@
 
 <img src='SmoothSkin/result/smooth.png' width=800 height=250>
 
-### [Face Detection](PCN/)
+### [Real-Time Rotation-Invariant Face Detection and Tracking](PCN/) (more than 300FPS on CPU)
 
 <img src='PCN/result/demo.png' width=800 height=410>
 
