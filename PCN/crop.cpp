@@ -24,7 +24,7 @@ int main()
     detector.SetDetectionThresh(0.37, 0.43, 0.97);
     /// tracking
     detector.SetTrackingPeriod(30);
-    detector.SetTrackingThresh(0.8);
+    detector.SetTrackingThresh(0.95);
     detector.SetVideoSmooth(false);
 
     for (int i = 1; i <= 26; i++)
