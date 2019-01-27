@@ -1,4 +1,4 @@
-### [Real-Time Rotation-Invariant Face Detection and Tracking](PCN/) (more than 300FPS on CPU)
+### [Real-Time Rotation-Invariant Face Detection and Tracking](PCN/) (400FPS on CPU)
 
 <img src='PCN/result/demo.png' width=800 height=410>
 

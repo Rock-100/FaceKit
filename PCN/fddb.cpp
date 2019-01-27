@@ -10,10 +10,16 @@ int main()
     float time = 0;
 
     PCN detector("model/PCN.caffemodel",
-                 "model/PCN-1.prototxt", "model/PCN-2.prototxt", "model/PCN-3.prototxt");
+                 "model/PCN-1.prototxt", "model/PCN-2.prototxt", "model/PCN-3.prototxt",
+                 "model/PCN-Tracking.caffemodel",
+                 "model/PCN-Tracking.prototxt");
+    /// detection
     detector.SetMinFaceSize(20);
-    detector.SetScoreThresh(0.37, 0.43, 0.7);
     detector.SetImagePyramidScaleFactor(1.414);
+    detector.SetDetectionThresh(0.37, 0.43, 0.7);
+    /// tracking
+    detector.SetTrackingPeriod(30);
+    detector.SetTrackingThresh(0.6);
     detector.SetVideoSmooth(false);
 
     while (std::getline(in, line))
@@ -22,7 +28,7 @@ int main()
         cv::Mat img = cv::imread(dataPath + line + ".jpg");
 
         long t0 = cv::getTickCount();
-        std::vector<Window> faces = detector.DetectFace(img);
+        std::vector<Window> faces = detector.Detect(img);
         long t1 = cv::getTickCount();
         time += (t1 - t0) / cv::getTickFrequency();
         total += 1;

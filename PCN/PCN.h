@@ -7,6 +7,7 @@
 #include <vector>
 #include <algorithm>
 #include <cmath>
+#include <iomanip>
 
 #include "opencv2/opencv.hpp"
 #include "caffe/caffe.hpp"
@@ -86,12 +87,18 @@ cv::Mat CropFace(cv::Mat img, Window face, int cropSize)
 class PCN
 {
 public:
-    PCN(std::string model, std::string net1, std::string net2, std::string net3);
+    PCN(std::string modelDetect, std::string net1, std::string net2, std::string net3,
+        std::string modelTrack, std::string netTrack);
+    /// detection
     void SetMinFaceSize(int minFace);
-    void SetScoreThresh(float thresh1, float thresh2, float thresh3);
+    void SetDetectionThresh(float thresh1, float thresh2, float thresh3);
     void SetImagePyramidScaleFactor(float factor);
+    std::vector<Window> Detect(cv::Mat img);
+    /// tracking
+    void SetTrackingPeriod(int period);
+    void SetTrackingThresh(float thresh);
     void SetVideoSmooth(bool smooth);
-    std::vector<Window> DetectFace(cv::Mat img);
+    std::vector<Window> DetectTrack(cv::Mat img);
 
 private:
     void* impl_;

@@ -12,12 +12,14 @@ struct Window2
 class Impl
 {
 public:
-    void LoadModel(std::string model, std::string net1, std::string net2, std::string net3);
+    void LoadModel(std::string modelDetect, std::string net1, std::string net2, std::string net3,
+                   std::string modelTrack, std::string netTrack);
     cv::Mat ResizeImg(cv::Mat img, float scale);
     static bool CompareWin(const Window2 &w1, const Window2 &w2);
     bool Legal(int x, int y, cv::Mat img);
     bool Inside(int x, int y, Window2 rect);
     int SmoothAngle(int a, int b);
+    std::vector<Window2> SmoothWindow(std::vector<Window2> winList);
     float IoU(Window2 &w1, Window2 &w2);
     std::vector<Window2> NMS(std::vector<Window2> &winList, bool local, float threshold);
     std::vector<Window2> DeleteFP(std::vector<Window2> &winList);
@@ -32,9 +34,11 @@ public:
                                 caffe::shared_ptr<caffe::Net<float> > &net, float thres, int dim, std::vector<Window2> &winList);
     std::vector<Window2> Stage3(cv::Mat img, cv::Mat img180, cv::Mat img90, cv::Mat imgNeg90,
                                 caffe::shared_ptr<caffe::Net<float> > &net, float thres, int dim, std::vector<Window2> &winList);
+    std::vector<Window2> Detect(cv::Mat img, cv::Mat imgPad);
+    std::vector<Window2> Track(cv::Mat img, caffe::shared_ptr<caffe::Net<float> > &net,
+                               float thres, int dim, std::vector<Window2> &winList);
 
-
-    caffe::shared_ptr<caffe::Net<float> > net_[3];
+    caffe::shared_ptr<caffe::Net<float> > net_[4];
     int minFace_;
     float scale_;
     int stride_;
@@ -42,12 +46,16 @@ public:
     float nmsThreshold_[3];
     float angleRange_;
     bool stable_;
+    int period_;
+    float trackThreshold_;
+    float augScale_;
 };
 
-PCN::PCN(std::string model, std::string net1, std::string net2, std::string net3) : impl_(new Impl())
+PCN::PCN(std::string modelDetect, std::string net1, std::string net2, std::string net3,
+         std::string modelTrack, std::string netTrack) : impl_(new Impl())
 {
     Impl *p = (Impl *)impl_;
-    p->LoadModel(model, net1, net2, net3);
+    p->LoadModel(modelDetect, net1, net2, net3, modelTrack, netTrack);
 }
 
 void PCN::SetVideoSmooth(bool stable)
@@ -63,7 +71,7 @@ void PCN::SetMinFaceSize(int minFace)
     p->minFace_ *= 1.4;
 }
 
-void PCN::SetScoreThresh(float thresh1, float thresh2, float thresh3)
+void PCN::SetDetectionThresh(float thresh1, float thresh2, float thresh3)
 {
     Impl *p = (Impl *)impl_;
     p->classThreshold_[0] = thresh1;
@@ -74,6 +82,7 @@ void PCN::SetScoreThresh(float thresh1, float thresh2, float thresh3)
     p->nmsThreshold_[2] = 0.3;
     p->stride_ = 8;
     p->angleRange_ = 45;
+    p->augScale_ = 0.15;
 }
 
 void PCN::SetImagePyramidScaleFactor(float factor)
@@ -82,70 +91,79 @@ void PCN::SetImagePyramidScaleFactor(float factor)
     p->scale_ = factor;
 }
 
-std::vector<Window> PCN::DetectFace(cv::Mat img)
+void PCN::SetTrackingPeriod(int period)
+{
+    Impl *p = (Impl *)impl_;
+    p->period_ = period;
+}
+
+void PCN::SetTrackingThresh(float thres)
+{
+    Impl *p = (Impl *)impl_;
+    p->trackThreshold_ = thres;
+}
+
+std::vector<Window> PCN::Detect(cv::Mat img)
 {
     Impl *p = (Impl *)impl_;
     cv::Mat imgPad = p->PadImg(img);
-    cv::Mat img180, img90, imgNeg90;
-    cv::flip(imgPad, img180, 0);
-    cv::transpose(imgPad, img90);
-    cv::flip(img90, imgNeg90, 0);
+    std::vector<Window2> winList = p->Detect(img, imgPad);
 
-    std::vector<Window2> winList = p->Stage1(img, imgPad, p->net_[0], p->classThreshold_[0]);
-    winList = p->NMS(winList, true, p->nmsThreshold_[0]);
-
-    winList = p->Stage2(imgPad, img180, p->net_[1], p->classThreshold_[1], 24, winList);
-    winList = p->NMS(winList, true, p->nmsThreshold_[1]);
-
-    winList = p->Stage3(imgPad, img180, img90, imgNeg90, p->net_[2], p->classThreshold_[2], 48, winList);
-    winList = p->NMS(winList, false, p->nmsThreshold_[2]);
-    winList = p->DeleteFP(winList);
-
-    static std::vector<Window2> preList;
     if (p->stable_)
     {
-        for (int i = 0; i < winList.size(); i++)
-        {
-            for (int j = 0; j < preList.size(); j++)
-            {
-                if (p->IoU(winList[i], preList[j]) > 0.9)
-                {
-                    winList[i].conf = (winList[i].conf + preList[j].conf) / 2;
-                    winList[i].x = preList[j].x;
-                    winList[i].y = preList[j].y;
-                    winList[i].w = preList[j].w;
-                    winList[i].h = preList[j].h;
-                    winList[i].angle = preList[j].angle;
-                }
-                else if (p->IoU(winList[i], preList[j]) > 0.6)
-                {
-                    winList[i].conf = (winList[i].conf + preList[j].conf) / 2;
-                    winList[i].x = (winList[i].x + preList[j].x) / 2;
-                    winList[i].y = (winList[i].y + preList[j].y) / 2;
-                    winList[i].w = (winList[i].w + preList[j].w) / 2;
-                    winList[i].h = (winList[i].h + preList[j].h) / 2;
-                    winList[i].angle = p->SmoothAngle(winList[i].angle, preList[j].angle);
-                }
-            }
-        }
-        preList = winList;
+        winList = p->SmoothWindow(winList);
     }
     return p->TransWindow(img, imgPad, winList);
 }
 
-void Impl::LoadModel(std::string model,
-                     std::string net1, std::string net2, std::string net3)
+std::vector<Window> PCN::DetectTrack(cv::Mat img)
+{
+    Impl *p = (Impl *)impl_;
+    cv::Mat imgPad = p->PadImg(img);
+
+    static int detectFlag = p->period_;
+    static std::vector<Window2> preList;
+    std::vector<Window2> winList = p->Track(imgPad, p->net_[3], p->trackThreshold_, 72, preList);
+
+    if (detectFlag == p->period_)
+    {
+        std::vector<Window2> tmpList = p->Detect(img, imgPad);
+        for (int i = 0; i < tmpList.size(); i++)
+        {
+            winList.push_back(tmpList[i]);
+        }
+    }
+
+    winList = p->NMS(winList, false, p->nmsThreshold_[2]);
+    winList = p->DeleteFP(winList);
+    preList = winList;
+    if (p->stable_)
+    {
+        winList = p->SmoothWindow(winList);
+    }
+    detectFlag--;
+    if (detectFlag == 0)
+        detectFlag = p->period_;
+    return p->TransWindow(img, imgPad, winList);
+}
+
+void Impl::LoadModel(std::string modelDetect, std::string net1, std::string net2, std::string net3,
+                     std::string modelTrack, std::string netTrack)
 {
     caffe::Caffe::set_mode(caffe::Caffe::CPU);
     google::InitGoogleLogging("VR");
     FLAGS_logtostderr = 0;
 
     net_[0].reset(new caffe::Net<float>(net1.c_str(), caffe::TEST));
-    net_[0]->CopyTrainedLayersFrom(model.c_str());
+    net_[0]->CopyTrainedLayersFrom(modelDetect.c_str());
     net_[1].reset(new caffe::Net<float>(net2.c_str(), caffe::TEST));
-    net_[1]->CopyTrainedLayersFrom(model.c_str());
+    net_[1]->CopyTrainedLayersFrom(modelDetect.c_str());
     net_[2].reset(new caffe::Net<float>(net3.c_str(), caffe::TEST));
-    net_[2]->CopyTrainedLayersFrom(model.c_str());
+    net_[2]->CopyTrainedLayersFrom(modelDetect.c_str());
+
+    net_[3].reset(new caffe::Net<float>(netTrack.c_str(), caffe::TEST));
+    net_[3]->CopyTrainedLayersFrom(modelTrack.c_str());
+
     google::ShutdownGoogleLogging();
 }
 
@@ -536,5 +554,103 @@ std::vector<Window> Impl::TransWindow(cv::Mat img, cv::Mat imgPad, std::vector<W
     }
     return ret;
 }
+
+std::vector<Window2> Impl::SmoothWindow(std::vector<Window2> winList)
+{
+    static std::vector<Window2> preList;
+    for (int i = 0; i < winList.size(); i++)
+    {
+        for (int j = 0; j < preList.size(); j++)
+        {
+            if (IoU(winList[i], preList[j]) > 0.9)
+            {
+                winList[i].conf = (winList[i].conf + preList[j].conf) / 2;
+                winList[i].x = preList[j].x;
+                winList[i].y = preList[j].y;
+                winList[i].w = preList[j].w;
+                winList[i].h = preList[j].h;
+                winList[i].angle = preList[j].angle;
+            }
+            else if (IoU(winList[i], preList[j]) > 0.6)
+            {
+                winList[i].conf = (winList[i].conf + preList[j].conf) / 2;
+                winList[i].x = (winList[i].x + preList[j].x) / 2;
+                winList[i].y = (winList[i].y + preList[j].y) / 2;
+                winList[i].w = (winList[i].w + preList[j].w) / 2;
+                winList[i].h = (winList[i].h + preList[j].h) / 2;
+                winList[i].angle = SmoothAngle(winList[i].angle, preList[j].angle);
+            }
+        }
+    }
+    preList = winList;
+    return winList;
+}
+
+std::vector<Window2> Impl::Detect(cv::Mat img, cv::Mat imgPad)
+{
+    cv::Mat img180, img90, imgNeg90;
+    cv::flip(imgPad, img180, 0);
+    cv::transpose(imgPad, img90);
+    cv::flip(img90, imgNeg90, 0);
+
+    std::vector<Window2> winList = Stage1(img, imgPad, net_[0], classThreshold_[0]);
+    winList = NMS(winList, true, nmsThreshold_[0]);
+
+    winList = Stage2(imgPad, img180, net_[1], classThreshold_[1], 24, winList);
+    winList = NMS(winList, true, nmsThreshold_[1]);
+
+    winList = Stage3(imgPad, img180, img90, imgNeg90, net_[2], classThreshold_[2], 48, winList);
+    winList = NMS(winList, false, nmsThreshold_[2]);
+    winList = DeleteFP(winList);
+    return winList;
+}
+
+std::vector<Window2> Impl::Track(cv::Mat img, caffe::shared_ptr<caffe::Net<float> > &net,
+                                 float thres, int dim, std::vector<Window2> &winList)
+{
+    if (winList.size() == 0)
+        return winList;
+    std::vector<cv::Mat> dataList;
+    for (int i = 0; i < winList.size(); i++)
+    {
+        Window win(winList[i].x - augScale_ * winList[i].w, winList[i].y - augScale_ * winList[i].w,
+                   winList[i].w + 2 * augScale_ * winList[i].w, winList[i].angle, winList[i].conf);
+        dataList.push_back(PreProcessImg(CropFace(img, win, dim), dim));
+    }
+    SetInput(dataList, net);
+    net->Forward();
+    caffe::Blob<float>* reg = net->output_blobs()[0];
+    caffe::Blob<float>* prob = net->output_blobs()[1];
+    caffe::Blob<float>* rotateProb = net->output_blobs()[2];
+    std::vector<Window2> ret;
+    for (int i = 0; i < winList.size(); i++)
+    {
+        if (prob->data_at(i, 1, 0, 0) > thres)
+        {
+            float sn = reg->data_at(i, 0, 0, 0);
+            float xn = reg->data_at(i, 1, 0, 0);
+            float yn = reg->data_at(i, 2, 0, 0);
+            int cropX = winList[i].x - augScale_ * winList[i].w;
+            int cropY = winList[i].y - augScale_ * winList[i].w;
+            int cropW = winList[i].w + 2 * augScale_ * winList[i].w;
+            float theta = -winList[i].angle * M_PI / 180;
+            int w = int(sn * cropW);
+            int x = int(cropX  - 0.5 * sn * cropW +
+                        cropW * sn * xn * std::cos(theta) - cropW * sn * yn * std::sin(theta) + 0.5 * cropW);
+            int y = int(cropY  - 0.5 * sn * cropW +
+                        cropW * sn * xn * std::sin(theta) + cropW * sn * yn * std::cos(theta) + 0.5 * cropW);
+            float angle = angleRange_ * rotateProb->data_at(i, 0, 0, 0);
+            if (Legal(x, y, img) && Legal(x + w - 1, y + w - 1, img))
+            {
+                int tmpW = w / (1 + 2 * augScale_);
+                if (tmpW >= 20)
+                    ret.push_back(Window2(x + augScale_ * tmpW, y + augScale_ * tmpW,
+                                          tmpW, tmpW, winList[i].angle + angle, winList[i].scale, prob->data_at(i, 1, 0, 0)));
+            }
+        }
+    }
+    return ret;
+}
+
 
 

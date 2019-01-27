@@ -15,10 +15,16 @@ cv::Mat MergeImgs(cv::Mat A, cv::Mat B)
 int main()
 {
     PCN detector("model/PCN.caffemodel",
-                 "model/PCN-1.prototxt", "model/PCN-2.prototxt", "model/PCN-3.prototxt");
+                 "model/PCN-1.prototxt", "model/PCN-2.prototxt", "model/PCN-3.prototxt",
+                 "model/PCN-Tracking.caffemodel",
+                 "model/PCN-Tracking.prototxt");
+    /// detection
     detector.SetMinFaceSize(45);
-    detector.SetScoreThresh(0.37, 0.43, 0.95);
     detector.SetImagePyramidScaleFactor(1.414);
+    detector.SetDetectionThresh(0.37, 0.43, 0.97);
+    /// tracking
+    detector.SetTrackingPeriod(30);
+    detector.SetTrackingThresh(0.6);
     detector.SetVideoSmooth(false);
 
     for (int i = 1; i <= 26; i++)
@@ -28,7 +34,7 @@ int main()
         cv::TickMeter tm;
         tm.reset();
         tm.start();
-        std::vector<Window> faces = detector.DetectFace(img);
+        std::vector<Window> faces = detector.Detect(img);
         tm.stop();
         std::cout << "Image: " << i << std::endl;
         std::cout << "Time Cost: "<<
