@@ -66,6 +66,7 @@ sh run.sh picture/crop/video/fddb
 
 ### Other Implementations
 
+* [IOS](https://github.com/elhoangvu/PCN-iOS) (by elhoangvu)
 * [NCNN](https://github.com/HandsomeHans/PCN-ncnn) (by HandsomeHans)
 * [OpenCV](https://github.com/richipower/PCN-opencv) (by richipower)
 * [Windows](https://github.com/imistyrain/PCN-Windows) (by imistyrain)
