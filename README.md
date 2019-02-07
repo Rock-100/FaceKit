@@ -12,12 +12,6 @@
 
 <img src='SmoothSkin/result/smooth.png' width=800 height=250>
 
-### Contact
-
-shuzhe.wu@vipl.ict.ac.cn
-
-xuepeng.shi@vipl.ict.ac.cn
-
 ### License
 
 This code is distributed under the [BSD 2-Clause license](LICENSE).
