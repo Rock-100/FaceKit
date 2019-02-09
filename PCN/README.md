@@ -1,3 +1,9 @@
+# Fork
+1. Added python wrapper
+2. Added makefile
+3. Added id per tracked face
+
+
 # News
 
 [Tracking](video.cpp) released, achieving 400FPS on CPU! 
