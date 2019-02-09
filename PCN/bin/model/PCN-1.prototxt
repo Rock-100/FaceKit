@@ -1,0 +1,118 @@
+name: "PCN-1"
+
+input: "data"
+input_dim: 1
+input_dim: 3
+input_dim: 24
+input_dim: 24
+
+layer {
+  name: "conv1_1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1_1"
+  convolution_param {
+    num_output: 16
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "relu1_1"
+  type: "ReLU"
+  bottom: "conv1_1"
+  top: "conv1_1"
+}
+layer {
+  name: "conv2_1"
+  type: "Convolution"
+  bottom: "conv1_1"
+  top: "conv2_1"
+  convolution_param {
+    num_output: 32
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "relu2_1"
+  type: "ReLU"
+  bottom: "conv2_1"
+  top: "conv2_1"
+}
+layer {
+  name: "conv3_1"
+  type: "Convolution"
+  bottom: "conv2_1"
+  top: "conv3_1"
+  convolution_param {
+    num_output: 64
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "relu3_1"
+  type: "ReLU"
+  bottom: "conv3_1"
+  top: "conv3_1"
+}
+layer {
+  name: "fc4_1"
+  type: "Convolution"
+  bottom: "conv3_1"
+  top: "fc4_1"
+  convolution_param {
+    num_output: 128
+    kernel_size: 2
+    stride: 1
+  }
+}
+layer {
+  name: "relu4_1"
+  type: "ReLU"
+  bottom: "fc4_1"
+  top: "fc4_1"
+}
+layer {
+  name: "fc5_1"
+  type: "Convolution"
+  bottom: "fc4_1"
+  top: "fc5_1"
+  convolution_param {
+    num_output: 2
+    kernel_size: 1
+  }
+}
+layer {
+  name: "cls_prob"
+  type: "Softmax"
+  bottom: "fc5_1"
+  top: "cls_prob"
+}
+layer {
+  name: "fc6_1"
+  type: "Convolution"
+  bottom: "fc4_1"
+  top: "fc6_1"
+  convolution_param {
+    num_output: 2
+    kernel_size: 1
+  }
+}
+layer {
+  name: "rotate_cls_prob"
+  type: "Softmax"
+  bottom: "fc6_1"
+  top: "rotate_cls_prob"
+}
+layer {
+  name: "bbox_reg_1"
+  type: "Convolution"
+  bottom: "fc4_1"
+  top: "bbox_reg_1"
+  convolution_param {
+    num_output: 3
+    kernel_size: 1
+  }
+}

@@ -1,0 +1,153 @@
+name: "PCN-3"
+
+input: "data"
+input_dim: 1
+input_dim: 3
+input_dim: 48
+input_dim: 48
+
+layer {
+  name: "conv1_3"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1_3"
+  convolution_param {
+    num_output: 24
+    kernel_size: 3
+  }
+}
+layer {
+  name: "pool1_3"
+  type: "Pooling"
+  bottom: "conv1_3"
+  top: "pool1_3"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "relu1_3"
+  type: "ReLU"
+  bottom: "pool1_3"
+  top: "pool1_3"
+}
+layer {
+  name: "conv2_3"
+  type: "Convolution"
+  bottom: "pool1_3"
+  top: "conv2_3"
+  convolution_param {
+    num_output: 48
+    kernel_size: 3
+  }
+}
+layer {
+  name: "pool2_3"
+  type: "Pooling"
+  bottom: "conv2_3"
+  top: "pool2_3"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "relu2_3"
+  type: "ReLU"
+  bottom: "pool2_3"
+  top: "pool2_3"
+}
+layer {
+  name: "conv3_3"
+  type: "Convolution"
+  bottom: "pool2_3"
+  top: "conv3_3"
+  convolution_param {
+    num_output: 96
+    kernel_size: 3
+  }
+}
+layer {
+  name: "pool3_3"
+  type: "Pooling"
+  bottom: "conv3_3"
+  top: "pool3_3"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "relu3_3"
+  type: "ReLU"
+  bottom: "pool3_3"
+  top: "pool3_3"
+}
+layer {
+  name: "conv4_3"
+  type: "Convolution"
+  bottom: "pool3_3"
+  top: "conv4_3"
+  convolution_param {
+    num_output: 144
+    kernel_size: 2
+  }
+}
+layer {
+  name: "relu4_3"
+  type: "ReLU"
+  bottom: "conv4_3"
+  top: "conv4_3"
+}
+layer {
+  name: "fc5_3"
+  type: "InnerProduct"
+  bottom: "conv4_3"
+  top: "fc5_3"
+  inner_product_param {
+    num_output: 192
+  }
+}
+layer {
+  name: "relu5_3"
+  type: "ReLU"
+  bottom: "fc5_3"
+  top: "fc5_3"
+}
+layer {
+  name: "fc6_3"
+  type: "InnerProduct"
+  bottom: "fc5_3"
+  top: "fc6_3"
+  inner_product_param {
+    num_output: 2
+  }
+}
+layer {
+  name: "cls_prob"
+  type: "Softmax"
+  bottom: "fc6_3"
+  top: "cls_prob"
+}
+layer {
+  name: "bbox_reg_3"
+  type: "InnerProduct"
+  bottom: "fc5_3"
+  top: "bbox_reg_3"
+  inner_product_param {
+    num_output: 3
+  }
+}
+layer {
+  name: "rotate_reg_3"
+  type: "InnerProduct"
+  bottom: "fc5_3"
+  top: "rotate_reg_3"
+  inner_product_param {
+    num_output: 1
+  }
+}

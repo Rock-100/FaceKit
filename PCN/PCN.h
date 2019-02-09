@@ -20,69 +20,11 @@ struct Window
 {
     int x, y, width;
     float angle, score;
-    Window(int x_, int y_, int w_, float a_, float s_)
-        : x(x_), y(y_), width(w_), angle(a_), score(s_)
+    int id;
+    Window(int x_, int y_, int w_, float a_, float s_, int id_)
+        : x(x_), y(y_), width(w_), angle(a_), score(s_), id(id_)
     {}
 };
-
-cv::Point RotatePoint(int x, int y, float centerX, float centerY, float angle)
-{
-    x -= centerX;
-    y -= centerY;
-    float theta = -angle * M_PI / 180;
-    int rx = int(centerX + x * std::cos(theta) - y * std::sin(theta));
-    int ry = int(centerY + x * std::sin(theta) + y * std::cos(theta));
-    return cv::Point(rx, ry);
-}
-
-void DrawLine(cv::Mat img, std::vector<cv::Point> pointList)
-{
-    int thick = 2;
-    CvScalar cyan = CV_RGB(0, 255, 255);
-    CvScalar blue = CV_RGB(0, 0, 255);
-    cv::line(img, pointList[0], pointList[1], cyan, thick);
-    cv::line(img, pointList[1], pointList[2], cyan, thick);
-    cv::line(img, pointList[2], pointList[3], cyan, thick);
-    cv::line(img, pointList[3], pointList[0], blue, thick);
-}
-
-void DrawFace(cv::Mat img, Window face)
-{
-    int x1 = face.x;
-    int y1 = face.y;
-    int x2 = face.width + face.x - 1;
-    int y2 = face.width + face.y - 1;
-    int centerX = (x1 + x2) / 2;
-    int centerY = (y1 + y2) / 2;
-    std::vector<cv::Point> pointList;
-    pointList.push_back(RotatePoint(x1, y1, centerX, centerY, face.angle));
-    pointList.push_back(RotatePoint(x1, y2, centerX, centerY, face.angle));
-    pointList.push_back(RotatePoint(x2, y2, centerX, centerY, face.angle));
-    pointList.push_back(RotatePoint(x2, y1, centerX, centerY, face.angle));
-    DrawLine(img, pointList);
-}
-
-cv::Mat CropFace(cv::Mat img, Window face, int cropSize)
-{
-    int x1 = face.x;
-    int y1 = face.y;
-    int x2 = face.width + face.x - 1;
-    int y2 = face.width + face.y - 1;
-    int centerX = (x1 + x2) / 2;
-    int centerY = (y1 + y2) / 2;
-    cv::Point2f srcTriangle[3];
-    cv::Point2f dstTriangle[3];
-    srcTriangle[0] = RotatePoint(x1, y1, centerX, centerY, face.angle);
-    srcTriangle[1] = RotatePoint(x1, y2, centerX, centerY, face.angle);
-    srcTriangle[2] = RotatePoint(x2, y2, centerX, centerY, face.angle);
-    dstTriangle[0] = cv::Point(0, 0);
-    dstTriangle[1] = cv::Point(0, cropSize - 1);
-    dstTriangle[2] = cv::Point(cropSize - 1, cropSize - 1);
-    cv::Mat rotMat = cv::getAffineTransform(srcTriangle, dstTriangle);
-    cv::Mat ret;
-    cv::warpAffine(img, ret, rotMat, cv::Size(cropSize, cropSize));
-    return ret;
-}
 
 class PCN
 {
@@ -98,10 +40,24 @@ public:
     void SetTrackingPeriod(int period);
     void SetTrackingThresh(float thresh);
     void SetVideoSmooth(bool smooth);
+    void SetIOUThresh(float high_thresh, float low_thresh);
     std::vector<Window> DetectTrack(cv::Mat img);
 
 private:
     void* impl_;
 };
 
+extern "C"{
+	cv::Point RotatePoint(int x, int y, float centerX, float centerY, float angle);
+	void DrawLine(cv::Mat img, std::vector<cv::Point> pointList);
+	void DrawFace(cv::Mat img, Window face);
+	cv::Mat CropFace(cv::Mat img, Window face, int cropSize);
+	void *init_detector(int min_face_size, float pyramid_scale_factor, float detection_thresh_stage1,
+			float detection_thresh_stage2, float detection_thresh_stage3, int tracking_period,
+			float tracking_thresh, int do_smooth, float iou_high_thresh, float iou_low_thresh);
+	Window* detect_faces(void* pcn, unsigned char* raw_img,size_t rows, size_t cols, size_t *lwin);
+	void free_detector(void *pcn);
+}
+
 #endif
+

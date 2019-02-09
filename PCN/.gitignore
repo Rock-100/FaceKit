@@ -1,0 +1,7 @@
+*.swp
+tags
+
+PCN.o
+libPCNApi.so
+video
+
