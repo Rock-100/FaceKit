@@ -711,7 +711,7 @@ void DrawFace(cv::Mat img, Window face)
     pointList.push_back(RotatePoint(x2, y1, centerX, centerY, face.angle));
     DrawLine(img, pointList);
     cv::putText(img, std::string("id:") + std::to_string(face.id),
-		    cv::Point(x1, y1), 2, 1, cv::Scalar(255, 0, 125));
+		    cv::Point(x1, y1), 2, 1, cv::Scalar(255, 0, 0));
 }
 
 cv::Mat CropFace(cv::Mat img, Window face, int cropSize)
