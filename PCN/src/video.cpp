@@ -2,7 +2,7 @@
 
 int main()
 {
-    PCN* detector = (PCN*) init_detector(30,1.414,0.37,0.43,0.97,30,0.95,1,0.9,0.6);
+    PCN* detector = (PCN*) init_detector(30,1.414,0.37,0.43,0.97,60,0.99,1,0.9,0.6);
     cv::VideoCapture capture(0);
     cv::Mat img;
     cv::TickMeter tm;
