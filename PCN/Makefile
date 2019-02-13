@@ -5,11 +5,13 @@ CXX_FLAGS=-std=c++11 -DCPU_ONLY
 LD_FLAGS=-lopencv_core -lopencv_highgui -lopencv_imgcodecs -lopencv_imgproc -lopencv_video -lopencv_videoio -lcaffe -lglog -lboost_system -lprotobuf 
 TARGETS=video picture crop fddb
 LIB=libPCNApi.so
-TARGET_DIR=./bin
+TARGET_DIR=.
 SOURCE_DIR=./src
+INSTALL_DIR=/usr/local/bin
+SHARE_DIR=/usr/local/share
 .PHONY: clean model
 
-all: $(TARGETS) $(LIB) model
+all: $(TARGETS) $(LIB)
 
 ${TARGET_DIR}/PCN.o: ${SOURCE_DIR}/PCN.cpp 
 	$(CC) -c -o $@ $< $(CXX_FLAGS) -fPIC ${DEBUG}
@@ -20,8 +22,10 @@ $(TARGETS): ${TARGET_DIR}/PCN.o
 $(LIB): ${TARGET_DIR}/PCN.o
 	$(CC) -o ${TARGET_DIR}/$@ $< -std=c++11 -O3 -D CPU_ONLY ${LD_FLAGS} -shared -fPIC ${DEBUG}
 
-model:
-	cp -r model ${TARGET_DIR}/
+install:
+	mkdir -p /usr/share/pcn
+	cp -r model /usr/share/pcn/
+	cp $(TARGETS) $(INSTALL_DIR)
 clean:
-	rm -rf ./bin/*
+	rm -rf $(TARGETS) $(LIB) *.o
 

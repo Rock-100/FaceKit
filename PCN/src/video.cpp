@@ -1,18 +1,26 @@
 #include "PCN.h"
 
-int main()
+int main(int argc, char **argv)
 {
-    PCN* detector = (PCN*) init_detector(30,1.414,0.37,0.43,0.97,60,0.99,1,0.9,0.6);
-    cv::VideoCapture capture(0);
+    PCN* detector = (PCN*) init_detector(30,1.414,0.37,0.43,0.97,30,0.95,1,0.9,0.6);
+    cv::VideoCapture capture;
+    if (argc >1)
+	    capture.open(argv[1]);
+    else
+	    capture.open(0);
+
+    if (!capture.isOpened())
+	    return 0;
+
     cv::Mat img;
     cv::TickMeter tm;
     while (1)
     {
-        capture >> img;
+        bool ret = capture.read(img);
+	if (!ret)
+		break;
         tm.reset();
         tm.start();
-        //std::vector<Window> faces = detector.Detect(img);
-        //std::vector<Window> faces = detector->DetectTrack(img);
 	
 	Window *wins= NULL;
 	size_t lwins = 0;

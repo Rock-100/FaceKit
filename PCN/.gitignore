@@ -1,7 +1,9 @@
 *.swp
 tags
-bin/
 PCN.o
 libPCNApi.so
 video
+picture
+fddb
+crop
 
