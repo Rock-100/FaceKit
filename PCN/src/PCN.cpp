@@ -1,5 +1,7 @@
 #include "PCN.h"
-
+#ifndef MODEL_PATH
+#define MODEL_PATH "./model"
+#endif
 struct Window2
 {
     int x, y, w, h;
@@ -741,10 +743,10 @@ void *init_detector(int min_face_size, float pyramid_scale_factor, float detecti
 		float detection_thresh_stage2, float detection_thresh_stage3, int tracking_period,
 		float tracking_thresh, int do_smooth, float iou_high_thresh, float iou_low_thresh)
 {
-    PCN *detector = new PCN("model/PCN.caffemodel",
-                 "model/PCN-1.prototxt", "model/PCN-2.prototxt", "model/PCN-3.prototxt",
-                 "model/PCN-Tracking.caffemodel",
-                 "model/PCN-Tracking.prototxt");
+    PCN *detector = new PCN(MODEL_PATH"/PCN.caffemodel",
+                 MODEL_PATH"/PCN-1.prototxt", MODEL_PATH"/PCN-2.prototxt", MODEL_PATH"/PCN-3.prototxt",
+                 MODEL_PATH"/PCN-Tracking.caffemodel",
+                 MODEL_PATH"/PCN-Tracking.prototxt");
     /// detection
     detector->SetMinFaceSize(min_face_size);
     detector->SetImagePyramidScaleFactor(pyramid_scale_factor);

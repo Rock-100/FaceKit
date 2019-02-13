@@ -11,7 +11,7 @@ class Window(Structure):
                 ("score", c_float),
                 ("id", c_int)]
 
-lib = CDLL("./libPCNApi.so", RTLD_GLOBAL)
+lib = CDLL("libPCNApi.so", RTLD_GLOBAL)
 
 init_detector = lib.init_detector
 #        int min_face_size, float pyramid_scale_factor, float detection_thresh_stage1,
@@ -39,7 +39,6 @@ def DrawFace(win,img):
     cv2.polylines(img,[pts],True,(0,255,255))
     cv2.putText(frame,str(win.id),(x1,y1), cv2.FONT_HERSHEY_SIMPLEX, 1,(255,255,255),2,cv2.LINE_AA)
 
-from ipdb import set_trace as dbg
 if __name__=="__main__":
     #cap = cv2.VideoCapture('udp://127.0.0.1:2234',cv2.CAP_FFMPEG)
     detector = init_detector(45,1.414,0.37,0.43,0.97,30,0.95,1,0.9,0.6)
