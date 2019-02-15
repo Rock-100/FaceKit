@@ -1,1 +1,1 @@
-import PyPCN
+from .PyPCN import *

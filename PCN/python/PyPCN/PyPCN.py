@@ -36,8 +36,8 @@ def DrawFace(win,img):
     centerY = (y1 + y2) / 2;
     pts = np.array([[x1,y1],[x1,y2],[x2,y2],[x2,y1]], np.int32)
     pts = pts.reshape((-1,1,2))
-    cv2.polylines(img,[pts],True,(0,255,255))
-    cv2.putText(frame,str(win.id),(x1,y1), cv2.FONT_HERSHEY_SIMPLEX, 1,(255,255,255),2,cv2.LINE_AA)
+    cv2.polylines(img,[pts],True,(0,0,255))
+    cv2.putText(img,str(win.id),(x1,y1), cv2.FONT_HERSHEY_SIMPLEX, 1,(255,255,255),2,cv2.LINE_AA)
 
 if __name__=="__main__":
     #cap = cv2.VideoCapture('udp://127.0.0.1:2234',cv2.CAP_FFMPEG)
