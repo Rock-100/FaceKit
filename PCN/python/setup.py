@@ -5,8 +5,9 @@ from distutils.extension import Extension
 from distutils.core import setup, Extension
 
 setup (
-        name = 'PCN Video Wrapper',
-        scripts=['PyPCN.py'],
+        name = 'Python PCN wrapper',
+        packages = ['PyPCN'],
+        #scripts=['PyPCN.py'],
         description = 'This package wraps PCN detector')
 
 #module1 = Extension('demo',
