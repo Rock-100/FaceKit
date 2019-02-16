@@ -2,7 +2,8 @@
 
 int main(int argc, char **argv)
 {
-    PCN* detector = (PCN*) init_detector(30,1.414,0.37,0.43,0.97,30,0.95,1,0.9,0.6);
+    //PCN* detector = (PCN*) init_detector(30,1.414,0.37,0.43,0.97,30,0.95,1,0.9,0.6);
+    PCN* detector = (PCN*) init_detector(15,1.414,0.37,0.43,0.97,15,0.6,1,0.9,0.3);
     cv::VideoCapture capture;
     if (argc >1)
 	    capture.open(argv[1]);

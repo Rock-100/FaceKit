@@ -569,44 +569,34 @@ std::vector<Window> Impl::TransWindow(cv::Mat img, cv::Mat imgPad, std::vector<W
     return ret;
 }
 
-std::vector<Window2> Impl::SmoothWindow(std::vector<Window2> aList, std::vector<Window2> bList)
+std::vector<Window2> Impl::SmoothWindow(std::vector<Window2> newList, std::vector<Window2> oldList)
 {
-    //static std::vector<Window2> bList;
+    //static std::vector<Window2> oldList;
     std::vector<Window2> newWinList;
-    for (int i = 0; i < aList.size(); i++)
+    for (int i = 0; i < newList.size(); i++)
     {
 	    int new_id = 1;
-        for (int j = 0; j < bList.size(); j++)
+        for (int j = 0; j < oldList.size(); j++)
         {
-            if (IoU(aList[i], bList[j]) > smooth_high_threshold_)
+		float iou = IoU(newList[i], oldList[j]);
+            if (iou > smooth_low_threshold_)
             {
-                aList[i].conf = (aList[i].conf + bList[j].conf) / 2;
-                aList[i].x = bList[j].x;
-                aList[i].y = bList[j].y;
-                aList[i].w = bList[j].w;
-                aList[i].h = bList[j].h;
-                aList[i].angle = bList[j].angle;
-		aList[i].id = bList[j].id;
-		new_id = 0;
-            }
-            else if (IoU(aList[i], bList[j]) > smooth_low_threshold_)
-            {
-                aList[i].conf = (aList[i].conf + bList[j].conf) / 2;
-                aList[i].x = (aList[i].x + bList[j].x) / 2;
-                aList[i].y = (aList[i].y + bList[j].y) / 2;
-                aList[i].w = (aList[i].w + bList[j].w) / 2;
-                aList[i].h = (aList[i].h + bList[j].h) / 2;
-                aList[i].angle = SmoothAngle(aList[i].angle, bList[j].angle);
-		aList[i].id = bList[j].id;
+                newList[i].conf = newList[i].conf *(iou) + oldList[j].conf*(1-iou);
+                newList[i].x = (newList[i].x)*(iou) + (oldList[j].x)*(1-iou);
+                newList[i].y = (newList[i].y)*(iou) + (oldList[j].y)*(1-iou);
+                newList[i].w = (newList[i].w)*(iou) + (oldList[j].w)*(1-iou);
+                newList[i].h = (newList[i].h)*(iou) + (oldList[j].h)*(1-iou);
+                newList[i].angle = SmoothAngle(newList[i].angle, oldList[j].angle);
+		newList[i].id = oldList[j].id;
 		new_id = 0;
             }
         }
 	if (new_id > 0){
-		aList[i].id = global_id_++; //consistent id after smoothing
+		newList[i].id = global_id_++; //consistent id after smoothing
 	}
     }
-    //bList = aList;
-    return aList;
+    //oldList = newList;
+    return newList;
 }
 
 std::vector<Window2> Impl::Detect(cv::Mat img, cv::Mat imgPad)

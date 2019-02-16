@@ -2,6 +2,7 @@
 from ctypes import *
 import cv2
 import numpy as np
+import sys
 
 class Window(Structure):
     _fields_ = [("x", c_int),
@@ -41,8 +42,12 @@ def DrawFace(win,img):
 
 if __name__=="__main__":
     #cap = cv2.VideoCapture('udp://127.0.0.1:2234',cv2.CAP_FFMPEG)
+    if len(sys.argv)==2:
+        cap = cv2.VideoCapture(sys.argv[1])
+    else:
+        cap = cv2.VideoCapture(0)
+
     detector = init_detector(45,1.414,0.37,0.43,0.97,30,0.95,1,0.9,0.6)
-    cap = cv2.VideoCapture(0)
     width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)   # float
     height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT) # float
     fps = cap.get(cv2.CAP_PROP_FPS) # float
