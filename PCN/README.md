@@ -1,10 +1,12 @@
 # News
 
-[Tracking](video.cpp) released, achieving 400FPS on CPU! 
+* [PyTorch implementation](https://github.com/siriusdemon/pytorch-PCN) available, thank Sirius Demon!
+
+* [Tracking](video.cpp) released, achieving 400FPS on CPU! 
 
 <img src='result/tracking.gif' width=400 height=300>
 
-[CropFace function](crop.cpp) released! 
+* [CropFace function](crop.cpp) released! 
 
 <img src='result/cropFace.png' width=800 height=210>
 
@@ -66,6 +68,7 @@ sh run.sh picture/crop/video/fddb
 
 ### Other Implementations
 
+* [PyTorch](https://github.com/siriusdemon/pytorch-PCN) (by siriusdemon)
 * [IOS](https://github.com/elhoangvu/PCN-iOS) (by elhoangvu)
 * [NCNN](https://github.com/HandsomeHans/PCN-ncnn) (by HandsomeHans)
 * [OpenCV](https://github.com/richipower/PCN-opencv) (by richipower)
