@@ -4,11 +4,11 @@
 
 * [Tracking](video.cpp) released, achieving 400FPS on CPU! 
 
-<img src='result/tracking.gif' width=400 height=300>
+> <img src='result/tracking.gif' width=400 height=300>
 
 * [CropFace function](crop.cpp) released! 
 
-<img src='result/cropFace.png' width=800 height=210>
+> <img src='result/cropFace.png' width=800 height=210>
 
 # Real-Time Rotation-Invariant Face Detection with Progressive Calibration Networks
 
