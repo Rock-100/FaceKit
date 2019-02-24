@@ -49,6 +49,7 @@ public:
     int period_;
     float trackThreshold_;
     float augScale_;
+    cv::Scalar mean_;
 };
 
 PCN::PCN(std::string modelDetect, std::string net1, std::string net2, std::string net3,
@@ -83,6 +84,7 @@ void PCN::SetDetectionThresh(float thresh1, float thresh2, float thresh3)
     p->stride_ = 8;
     p->angleRange_ = 45;
     p->augScale_ = 0.15;
+    p->mean_ = cv::Scalar(104, 117, 123);
 }
 
 void PCN::SetImagePyramidScaleFactor(float factor)
@@ -169,7 +171,7 @@ void Impl::LoadModel(std::string modelDetect, std::string net1, std::string net2
 
 cv::Mat Impl::PreProcessImg(cv::Mat img)
 {
-    cv::Mat mean(img.size(), CV_32FC3, cv::Scalar(104, 117, 123));
+    cv::Mat mean(img.size(), CV_32FC3, mean_);
     cv::Mat imgF;
     img.convertTo(imgF, CV_32FC3);
     return imgF - mean;
@@ -179,7 +181,7 @@ cv::Mat Impl::PreProcessImg(cv::Mat img, int dim)
 {
     cv::Mat imgNew;
     cv::resize(img, imgNew, cv::Size(dim, dim));
-    cv::Mat mean(imgNew.size(), CV_32FC3, cv::Scalar(104, 117, 123));
+    cv::Mat mean(imgNew.size(), CV_32FC3, mean_);
     cv::Mat imgF;
     imgNew.convertTo(imgF, CV_32FC3);
     return imgF - mean;
@@ -329,7 +331,7 @@ cv::Mat Impl::PadImg(cv::Mat img)
     int row = std::min(int(img.rows * 0.2), 100);
     int col = std::min(int(img.cols * 0.2), 100);
     cv::Mat ret;
-    cv::copyMakeBorder(img, ret, row, row, col, col, cv::BORDER_CONSTANT);
+    cv::copyMakeBorder(img, ret, row, row, col, col, cv::BORDER_CONSTANT, mean_);
     return ret;
 }
 
