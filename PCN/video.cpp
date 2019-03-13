@@ -11,7 +11,7 @@ int main()
     detector.SetImagePyramidScaleFactor(1.414);
     detector.SetDetectionThresh(0.37, 0.43, 0.97);
     /// tracking
-    detector.SetTrackingPeriod(30);
+    detector.SetTrackingPeriod(20);
     detector.SetTrackingThresh(0.95);
     detector.SetVideoSmooth(true);
 
