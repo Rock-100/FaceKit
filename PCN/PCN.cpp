@@ -331,7 +331,7 @@ cv::Mat Impl::PadImg(cv::Mat img)
     int row = std::min(int(img.rows * 0.2), 100);
     int col = std::min(int(img.cols * 0.2), 100);
     cv::Mat ret;
-    cv::copyMakeBorder(img, ret, row, row, col, col, cv::BORDER_CONSTANT, mean_);
+    cv::copyMakeBorder(img, ret, row, row, col, col, cv::BORDER_REPLICATE);
     return ret;
 }
 
