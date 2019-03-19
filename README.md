@@ -16,3 +16,9 @@
 
 This code is distributed under the [BSD 2-Clause license](LICENSE).
 
+### Contact
+
+Shuzhe Wu, shuzhe.wu@vipl.ict.ac.cn
+
+Xuepeng Shi, xuepeng.shi@vipl.ict.ac.cn
+
