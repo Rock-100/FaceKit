@@ -1,5 +1,7 @@
 # News
 
+* [PyCaffe implementation](https://github.com/daixiangzi/Caffe-PCN) available, thank daixiangzi!
+
 * [PyTorch implementation](https://github.com/siriusdemon/pytorch-PCN) available, thank Sirius Demon!
 
 * [Tracking](video.cpp) released, achieving 400FPS on CPU! 
@@ -68,6 +70,7 @@ sh run.sh picture/crop/video/fddb
 
 ### Other Implementations
 
+* [PyCaffe](https://github.com/daixiangzi) (by daixiangzi)
 * [PyTorch](https://github.com/siriusdemon/pytorch-PCN) (by siriusdemon)
 * [IOS](https://github.com/elhoangvu/PCN-iOS) (by elhoangvu)
 * [NCNN](https://github.com/HandsomeHans/PCN-ncnn) (by HandsomeHans)
