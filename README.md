@@ -14,7 +14,7 @@
 
 ### [Face Color Transfer](Color/)
 
-<img src='Color/result/result.png' width=800 height=250>
+<img src='Color/result/result.png' width=800 height=230>
 
 ### License
 
