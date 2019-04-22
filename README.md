@@ -12,6 +12,10 @@
 
 <img src='SmoothSkin/result/smooth.png' width=800 height=250>
 
+### [Face Color Transfer](Color/)
+
+<img src='Color/result/result.png' width=800 height=250>
+
 ### License
 
 This code is distributed under the [BSD 2-Clause license](LICENSE).
