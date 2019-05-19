@@ -12,7 +12,7 @@ int main()
     detector.SetDetectionThresh(0.37, 0.43, 0.97);
     /// tracking
     detector.SetTrackingPeriod(30);
-    detector.SetTrackingThresh(0.95);
+    detector.SetTrackingThresh(0.9);
     detector.SetVideoSmooth(false);
 
     for (int i = 0; i <= 26; i++)
@@ -30,6 +30,7 @@ int main()
         for (int j = 0; j < faces.size(); j++)
         {
             DrawFace(img, faces[j]);
+            DrawPoints(img, faces[j]);
         }
         cv::imshow("PCN", img);
         cv::waitKey();

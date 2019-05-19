@@ -7,12 +7,12 @@ int main()
                  "model/PCN-Tracking.caffemodel",
                  "model/PCN-Tracking.prototxt");
     /// detection
-    detector.SetMinFaceSize(45);
-    detector.SetImagePyramidScaleFactor(1.414);
-    detector.SetDetectionThresh(0.37, 0.43, 0.97);
+    detector.SetMinFaceSize(40);
+    detector.SetImagePyramidScaleFactor(1.45);
+    detector.SetDetectionThresh(0.5, 0.5, 0.98);
     /// tracking
-    detector.SetTrackingPeriod(20);
-    detector.SetTrackingThresh(0.95);
+    detector.SetTrackingPeriod(30);
+    detector.SetTrackingThresh(0.9);
     detector.SetVideoSmooth(true);
 
     cv::VideoCapture capture(0);
@@ -34,6 +34,7 @@ int main()
         for (int i = 0; i < faces.size(); i++)
         {
             DrawFace(img, faces[i]);
+            DrawPoints(img, faces[i]);
         }
         cv::imshow("PCN", img);
         if (cv::waitKey(1) == 'q')

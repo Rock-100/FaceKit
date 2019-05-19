@@ -3,8 +3,8 @@ name: "PCN-Tracking"
 input: "data"
 input_dim: 1
 input_dim: 3
-input_dim: 72
-input_dim: 72
+input_dim: 112
+input_dim: 112
 
 ###########################conv1##############################
 layer {
@@ -47,7 +47,7 @@ layer {
   bottom: "pool1"
   top: "conv2"
   convolution_param {
-    num_output: 12
+    num_output: 16
     kernel_size: 3
     stride: 1
     pad: 1
@@ -81,7 +81,7 @@ layer {
   bottom: "pool2"
   top: "conv3"
   convolution_param {
-    num_output: 24
+    num_output: 32
     kernel_size: 3
     stride: 1
     pad: 1
@@ -115,7 +115,7 @@ layer {
   bottom: "pool3"
   top: "conv4"
   convolution_param {
-    num_output: 48
+    num_output: 64
     kernel_size: 3
     stride: 1
     pad: 1
@@ -149,7 +149,7 @@ layer {
   bottom: "pool4"
   top: "conv5"
   convolution_param {
-    num_output: 96
+    num_output: 128
     kernel_size: 3
     stride: 1
     pad: 1
@@ -176,7 +176,7 @@ layer {
 }
 
 
-################################fc6#############################
+################################fc6######################################
 
 layer {
   name: "fc6"
@@ -184,7 +184,7 @@ layer {
   bottom: "pool5"
   top: "fc6"
   inner_product_param {
-    num_output: 128
+    num_output: 256
   }
 }
 layer {
@@ -231,5 +231,15 @@ layer {
   top: "rotate_reg"
   inner_product_param {
     num_output: 1
+  }
+}
+
+layer {
+  name: "points_reg"
+  type: "InnerProduct"
+  bottom: "fc6"
+  top: "points_reg"
+  inner_product_param {
+    num_output: 28
   }
 }

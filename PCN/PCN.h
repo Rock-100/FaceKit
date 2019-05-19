@@ -16,44 +16,49 @@
 #define CLAMP(x, l, u)  ((x) < (l) ? (l) : ((x) > (u) ? (u) : (x)))
 #define EPS  1e-5
 
+#define CYAN CV_RGB(0, 255, 255)
+#define BLUE CV_RGB(0, 0, 255)
+#define GREEN CV_RGB(0, 255, 0)
+#define RED CV_RGB(255, 0, 0)
+#define PURPLE CV_RGB(139, 0, 255)
+
 struct Window
 {
-    int x, y, width;
-    float angle, score;
-    Window(int x_, int y_, int w_, float a_, float s_)
-        : x(x_), y(y_), width(w_), angle(a_), score(s_)
+    int x, y, width, angle;
+    float score;
+    std::vector<cv::Point> points14;
+    Window(int x_, int y_, int w_, int a_, float s_, std::vector<cv::Point> p14_)
+        : x(x_), y(y_), width(w_), angle(a_), score(s_), points14(p14_)
     {}
 };
 
-cv::Point RotatePoint(int x, int y, float centerX, float centerY, float angle)
+cv::Point RotatePoint(float x, float y, float centerX, float centerY, float angle)
 {
     x -= centerX;
     y -= centerY;
     float theta = -angle * M_PI / 180;
-    int rx = int(centerX + x * std::cos(theta) - y * std::sin(theta));
-    int ry = int(centerY + x * std::sin(theta) + y * std::cos(theta));
+    float rx = centerX + x * std::cos(theta) - y * std::sin(theta);
+    float ry = centerY + x * std::sin(theta) + y * std::cos(theta);
     return cv::Point(rx, ry);
 }
 
 void DrawLine(cv::Mat img, std::vector<cv::Point> pointList)
 {
     int thick = 2;
-    CvScalar cyan = CV_RGB(0, 255, 255);
-    CvScalar blue = CV_RGB(0, 0, 255);
-    cv::line(img, pointList[0], pointList[1], cyan, thick);
-    cv::line(img, pointList[1], pointList[2], cyan, thick);
-    cv::line(img, pointList[2], pointList[3], cyan, thick);
-    cv::line(img, pointList[3], pointList[0], blue, thick);
+    cv::line(img, pointList[0], pointList[1], CYAN, thick);
+    cv::line(img, pointList[1], pointList[2], CYAN, thick);
+    cv::line(img, pointList[2], pointList[3], CYAN, thick);
+    cv::line(img, pointList[3], pointList[0], BLUE, thick);
 }
 
 void DrawFace(cv::Mat img, Window face)
 {
-    int x1 = face.x;
-    int y1 = face.y;
-    int x2 = face.width + face.x - 1;
-    int y2 = face.width + face.y - 1;
-    int centerX = (x1 + x2) / 2;
-    int centerY = (y1 + y2) / 2;
+    float x1 = face.x;
+    float y1 = face.y;
+    float x2 = face.width + face.x - 1;
+    float y2 = face.width + face.y - 1;
+    float centerX = (x1 + x2) / 2;
+    float centerY = (y1 + y2) / 2;
     std::vector<cv::Point> pointList;
     pointList.push_back(RotatePoint(x1, y1, centerX, centerY, face.angle));
     pointList.push_back(RotatePoint(x1, y2, centerX, centerY, face.angle));
@@ -62,14 +67,37 @@ void DrawFace(cv::Mat img, Window face)
     DrawLine(img, pointList);
 }
 
+void DrawPoints(cv::Mat img, Window face)
+{
+    int thick = 2;
+    if (face.points14.size() == 14)
+    {
+        for (int i = 1; i <= 8; i++)
+        {
+            cv::line(img, face.points14[i - 1], face.points14[i], BLUE, thick);
+        }
+        for (int i = 0; i < face.points14.size(); i++)
+        {
+            if (i <= 8)
+                cv::circle(img, face.points14[i], thick + 1, CYAN, -1);
+            else if (i <= 9)
+                cv::circle(img, face.points14[i], thick + 1, GREEN, -1);
+            else if (i <= 11)
+                cv::circle(img, face.points14[i], thick + 1, PURPLE, -1);
+            else
+                cv::circle(img, face.points14[i], thick + 1, RED, -1);
+        }
+    }
+}
+
 cv::Mat CropFace(cv::Mat img, Window face, int cropSize)
 {
-    int x1 = face.x;
-    int y1 = face.y;
-    int x2 = face.width + face.x - 1;
-    int y2 = face.width + face.y - 1;
-    int centerX = (x1 + x2) / 2;
-    int centerY = (y1 + y2) / 2;
+    float x1 = face.x;
+    float y1 = face.y;
+    float x2 = face.width + face.x - 1;
+    float y2 = face.width + face.y - 1;
+    float centerX = (x1 + x2) / 2;
+    float centerY = (y1 + y2) / 2;
     cv::Point2f srcTriangle[3];
     cv::Point2f dstTriangle[3];
     srcTriangle[0] = RotatePoint(x1, y1, centerX, centerY, face.angle);
