@@ -1,6 +1,9 @@
 ### [Real-Time Rotation-Invariant Face Detection and Tracking](PCN/)
 Click the image to watch the video!
-[![video demo 1](https://github.com/Jack-CV/FaceKit/blob/master/PCN/result/y.jpg)](https://v.youku.com/v_show/id_XNDE4OTA1ODU0MA==.html?spm=a2hzp.8244740.0.0)
+
+[![video demo 1](https://github.com/Jack-CV/FaceKit/blob/master/PCN/result/f.jpg)](https://v.youku.com/v_show/id_XNDE4OTE0MDkxNg==.html?spm=a2h3j.8428770.3416059.1)
+
+[![video demo 2](https://github.com/Jack-CV/FaceKit/blob/master/PCN/result/y.jpg)](https://v.youku.com/v_show/id_XNDE4OTA1ODU0MA==.html?spm=a2hzp.8244740.0.0)
 
 ### [Face Warping](Warping/)
 
