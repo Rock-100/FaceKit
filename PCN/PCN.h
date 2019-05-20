@@ -44,11 +44,11 @@ cv::Point RotatePoint(float x, float y, float centerX, float centerY, float angl
 
 void DrawLine(cv::Mat img, std::vector<cv::Point> pointList)
 {
-    int thick = 2;
-    cv::line(img, pointList[0], pointList[1], CYAN, thick);
-    cv::line(img, pointList[1], pointList[2], CYAN, thick);
-    cv::line(img, pointList[2], pointList[3], CYAN, thick);
-    cv::line(img, pointList[3], pointList[0], BLUE, thick);
+    int width = 2;
+    cv::line(img, pointList[0], pointList[1], CYAN, width);
+    cv::line(img, pointList[1], pointList[2], CYAN, width);
+    cv::line(img, pointList[2], pointList[3], CYAN, width);
+    cv::line(img, pointList[3], pointList[0], BLUE, width);
 }
 
 void DrawFace(cv::Mat img, Window face)
@@ -69,23 +69,23 @@ void DrawFace(cv::Mat img, Window face)
 
 void DrawPoints(cv::Mat img, Window face)
 {
-    int thick = 2;
+    int width = 2;
     if (face.points14.size() == 14)
     {
         for (int i = 1; i <= 8; i++)
         {
-            cv::line(img, face.points14[i - 1], face.points14[i], BLUE, thick);
+            cv::line(img, face.points14[i - 1], face.points14[i], BLUE, width);
         }
         for (int i = 0; i < face.points14.size(); i++)
         {
             if (i <= 8)
-                cv::circle(img, face.points14[i], thick + 1, CYAN, -1);
+                cv::circle(img, face.points14[i], width, CYAN, -1);
             else if (i <= 9)
-                cv::circle(img, face.points14[i], thick + 1, GREEN, -1);
+                cv::circle(img, face.points14[i], width, GREEN, -1);
             else if (i <= 11)
-                cv::circle(img, face.points14[i], thick + 1, PURPLE, -1);
+                cv::circle(img, face.points14[i], width, PURPLE, -1);
             else
-                cv::circle(img, face.points14[i], thick + 1, RED, -1);
+                cv::circle(img, face.points14[i], width, RED, -1);
         }
     }
 }
