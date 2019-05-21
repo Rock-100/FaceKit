@@ -111,7 +111,7 @@ std::vector<Window> PCN::Detect(cv::Mat img)
     Impl *p = (Impl *)impl_;
     cv::Mat imgPad = p->PadImg(img);
     std::vector<Window2> winList = p->Detect(img, imgPad);
-    std::vector<Window2> pointsList = p->Track(imgPad, p->net_[3], -1, 112, winList);
+    std::vector<Window2> pointsList = p->Track(imgPad, p->net_[3], -1, 96, winList);
     for (int i = 0; i < winList.size(); i++)
     {
         winList[i].points14 = pointsList[i].points14;
@@ -142,7 +142,7 @@ std::vector<Window> PCN::DetectTrack(cv::Mat img)
         }
     }
     winList = p->NMS(winList, false, p->nmsThreshold_[2]);
-    winList = p->Track(imgPad, p->net_[3], p->trackThreshold_, 112, winList);
+    winList = p->Track(imgPad, p->net_[3], p->trackThreshold_, 96, winList);
     winList = p->NMS(winList, false, p->nmsThreshold_[2]);
     winList = p->DeleteFP(winList);
     if (p->stable_)
