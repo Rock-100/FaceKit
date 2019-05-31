@@ -38,7 +38,7 @@ class FeatEnam(IntEnum):
     FEAT_POINTS = 14
 
 
-lib = CDLL("./libPCN.so", RTLD_GLOBAL)
+lib = CDLL("libPCN.so", RTLD_GLOBAL)
 
 init_detector = lib.init_detector
 #void *init_detector(const char *detection_model_path, 
