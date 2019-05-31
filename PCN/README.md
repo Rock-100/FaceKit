@@ -35,13 +35,12 @@ Smooth the face boxes or not (smooth = true or false, recommend using it on vide
 
 See [picture.cpp](picture.cpp) and [video.cpp](video.cpp) for details. If you want to reproduce the results on FDDB, please run [fddb.cpp](fddb.cpp). You can rotate the images in FDDB to get FDDB-left, FDDB-right, and FDDB-down, then test PCN on them respectively. 
 
-Compile and run:
+### Builiding PCM
+#### Install prerequisites On Ubuntu 18.04
+
 ```Shell
-cd $PCN_ROOT
-# You should set "CAFFEROOT" in lib.sh, compile.sh, and run.sh first. 
-sh lib.sh
-sh compile.sh picture/video/fddb
-sh run.sh picture/video/fddb
+sudo apt install libopencv-dev libcaffe-cpu-dev libboost-system-dev
+make
 ```
 
 ### Links
