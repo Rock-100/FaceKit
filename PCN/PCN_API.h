@@ -6,11 +6,11 @@ struct CPoint{
 	int x;
 	int y;
 };
-
+#define kFeaturePoints 14
 struct CWindow{
 	int x, y, width, angle;
 	float score;
-	struct CPoint points[14];
+	struct CPoint points[kFeaturePoints];
 
 	void from_window(Window win)
 	{
@@ -19,6 +19,7 @@ struct CWindow{
 		width = win.width;
 		angle = win.angle;
 		score = win.score;
+		//TODO memcpy..
 		for (int f=0; f< win.points14.size(); f++){
 			points[f].x = win.points14[f].x;
 			points[f].y = win.points14[f].y;
@@ -29,18 +30,16 @@ struct CWindow{
 
 extern "C"
 {
-//C API stuff
-#ifndef MODEL_PATH
-#define MODEL_PATH "./model"
-#endif
-	void *init_detector(int min_face_size, float pyramid_scale_factor, float detection_thresh_stage1,
+	void *init_detector(const char *detection_model_path, 
+			const char *pcn1_proto, const char *pcn2_proto, const char *pcn3_proto, 
+			const char *tracking_model_path, const char *tracking_proto,
+			int min_face_size, float pyramid_scale_factor, float detection_thresh_stage1,
 			float detection_thresh_stage2, float detection_thresh_stage3, int tracking_period,
 			float tracking_thresh, int do_smooth)
 	{
-		PCN *detector = new PCN(MODEL_PATH"/PCN.caffemodel",
-				MODEL_PATH"/PCN-1.prototxt", MODEL_PATH"/PCN-2.prototxt", MODEL_PATH"/PCN-3.prototxt",
-				MODEL_PATH"/PCN-Tracking.caffemodel",
-				MODEL_PATH"/PCN-Tracking.prototxt");
+		PCN *detector = new PCN(detection_model_path,pcn1_proto,pcn2_proto,pcn3_proto,
+				tracking_model_path,tracking_proto);
+
 		/// detection
 		detector->SetMinFaceSize(min_face_size);
 		detector->SetImagePyramidScaleFactor(pyramid_scale_factor);
@@ -52,7 +51,6 @@ extern "C"
 		detector->SetTrackingPeriod(tracking_period);
 		detector->SetTrackingThresh(tracking_thresh);
 		detector->SetVideoSmooth((bool)do_smooth);
-		//detector->SetIOUThresh(iou_high_thresh,iou_low_thresh);
 		return static_cast<void*> (detector);
 	}
 
