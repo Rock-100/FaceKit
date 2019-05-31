@@ -41,10 +41,17 @@ class FeatEnam(IntEnum):
 lib = CDLL("./libPCN.so", RTLD_GLOBAL)
 
 init_detector = lib.init_detector
-#void *init_detector(int min_face_size, float pyramid_scale_factor, float detection_thresh_stage1,
-#                float detection_thresh_stage2, float detection_thresh_stage3, int tracking_period,
-#                float tracking_thresh, int do_smooth)
-init_detector.argtypes = [c_int,c_float,c_float,c_float,c_float,c_int,c_float,c_int]
+#void *init_detector(const char *detection_model_path, 
+#            const char *pcn1_proto, const char *pcn2_proto, const char *pcn3_proto, 
+#            const char *tracking_model_path, const char *tracking_proto,
+#            int min_face_size, float pyramid_scale_factor, float detection_thresh_stage1,
+#            float detection_thresh_stage2, float detection_thresh_stage3, int tracking_period,
+#            float tracking_thresh, int do_smooth)
+init_detector.argtypes = [
+        c_char_p, c_char_p, c_char_p, 
+        c_char_p, c_char_p, c_char_p,
+        c_int,c_float,c_float,c_float,
+        c_float,c_int,c_float,c_int]
 init_detector.restype = c_void_p
 
 #CWindow* detect_faces(void* pcn, unsigned char* raw_img,size_t rows, size_t cols, int *lwin)
@@ -87,11 +94,11 @@ def DrawPoints(win,img):
     f = FeatEnam.MOUTH_RIGHT
     cv2.circle(img,(win.points[f].x,win.points[f].y),2,(0,255,0))
 
-    #for f in range(FeatEnam.FEAT_POINTS):
-    #    cv2.circle(img,(win.points[f].x,win.points[f].y),2,(0,255,255))
-
 def SetThreadCount(threads):
     os.environ['OMP_NUM_THREADS'] = str(threads)
+
+def c_str(str_in):
+    return c_char_p(str_in.encode('utf-8'))
 
 if __name__=="__main__":
 
@@ -101,8 +108,17 @@ if __name__=="__main__":
     else:
         cap = cv2.VideoCapture(0)
     #cap = cv2.VideoCapture('udp://127.0.0.1:2234',cv2.CAP_FFMPEG)
+    detection_model_path = c_str("./model/PCN.caffemodel")
+    pcn1_proto = c_str("./model/PCN-1.prototxt")
+    pcn2_proto = c_str("./model/PCN-2.prototxt")
+    pcn3_proto = c_str("./model/PCN-3.prototxt")
+    tracking_model_path = c_str("./model/PCN-Tracking.caffemodel")
+    tracking_proto = c_str("./model/PCN-Tracking.prototxt")
 
-    detector = init_detector(15,1.414,0.37,0.43,0.97,15,0.95,1)
+    detector = init_detector(detection_model_path,pcn1_proto,pcn2_proto,pcn3_proto,
+			tracking_model_path,tracking_proto, 
+			15,1.45,0.5,0.5,0.98,30,0.9,1)
+
     width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)   # float
     height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT) # float
     fps = cap.get(cv2.CAP_PROP_FPS) # float
