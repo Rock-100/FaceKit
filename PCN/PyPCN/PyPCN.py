@@ -108,12 +108,12 @@ if __name__=="__main__":
     else:
         cap = cv2.VideoCapture(0)
     #cap = cv2.VideoCapture('udp://127.0.0.1:2234',cv2.CAP_FFMPEG)
-    detection_model_path = c_str("./model/PCN.caffemodel")
-    pcn1_proto = c_str("./model/PCN-1.prototxt")
-    pcn2_proto = c_str("./model/PCN-2.prototxt")
-    pcn3_proto = c_str("./model/PCN-3.prototxt")
-    tracking_model_path = c_str("./model/PCN-Tracking.caffemodel")
-    tracking_proto = c_str("./model/PCN-Tracking.prototxt")
+    detection_model_path = c_str("../model/PCN.caffemodel")
+    pcn1_proto = c_str("../model/PCN-1.prototxt")
+    pcn2_proto = c_str("../model/PCN-2.prototxt")
+    pcn3_proto = c_str("../model/PCN-3.prototxt")
+    tracking_model_path = c_str("../model/PCN-Tracking.caffemodel")
+    tracking_proto = c_str("../model/PCN-Tracking.prototxt")
 
     detector = init_detector(detection_model_path,pcn1_proto,pcn2_proto,pcn3_proto,
 			tracking_model_path,tracking_proto, 
