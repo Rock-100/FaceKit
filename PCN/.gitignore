@@ -1,9 +1,6 @@
-*.swp
-tags
-PCN.o
-libPCNApi.so
+libPCN.so
 video
 picture
 fddb
 crop
-
+pcn_api_test
