@@ -46,7 +46,7 @@ See [picture.cpp](picture.cpp) and [video.cpp](video.cpp) for details. If you wa
 * Caffe
 * OpenCV (2.4.10, or other compatible version)
 
-### Builiding PCM
+### Builiding PCN
 Install prerequisites On Ubuntu 18.04
 ```Shell
 sudo apt install libopencv-dev libcaffe-cpu-dev libboost-system-dev
