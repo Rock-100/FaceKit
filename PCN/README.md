@@ -47,26 +47,24 @@ See [picture.cpp](picture.cpp) and [video.cpp](video.cpp) for details. If you wa
 * OpenCV (2.4.10, or other compatible version)
 
 ### Builiding PCN
-Install prerequisites On Ubuntu 18.04
-```Shell
-sudo apt install libopencv-dev libcaffe-cpu-dev libboost-system-dev
-```
+
 Build the library
 ```Shell
 make
+```
+Run the demo
+```Shell
+sh run.sh picture/crop/video/fddb
+```
+For python interface (only supported in Ubuntu 18.04):
+```Shell
+sudo apt install libcaffe-cpu-dev
+make
 sudo make install
 ```
-Install the python package
 ```Shell
-python3 ./setup.py build
-python3 ./setup.py install --user
+python3 PyPCN.py
 ```
-
-Check that python package is instelled properly
-```Shell
-python3 -c "import PyPCN"
-```
-If no errors are printed then it is installed correctly
 
 ### Other Implementations
 
