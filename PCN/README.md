@@ -35,12 +35,6 @@ Smooth the face boxes or not (smooth = true or false, recommend using it on vide
 
 See [picture.cpp](picture.cpp) and [video.cpp](video.cpp) for details. If you want to reproduce the results on FDDB, please run [fddb.cpp](fddb.cpp). You can rotate the images in FDDB to get FDDB-left, FDDB-right, and FDDB-down, then test PCN on them respectively. 
 
-### Python package
-After setting up use the package in your python code by:
-import PyPCN
-
-Running example of usage can be found under ./PCN/PyPCN/PyPCN.py
-Make sure to set the model files path correctly 
 
 ### Links
 
