@@ -67,8 +67,8 @@ python3 PyPCN.py
 ```
 
 ### Other Implementations
-
-* [PyCaffe](https://github.com/daixiangzi) (by daixiangzi)
+* [Python3 interface](https://github.com/EmilWine/FaceKit/tree/master/PCN) (by EmilWine)
+* [PyCaffe](https://github.com/daixiangzi/Caffe-PCN) (by daixiangzi)
 * [PyTorch](https://github.com/siriusdemon/pytorch-PCN) (by siriusdemon)
 * [IOS](https://github.com/elhoangvu/PCN-iOS) (by elhoangvu)
 * [NCNN](https://github.com/HandsomeHans/PCN-ncnn) (by HandsomeHans)
