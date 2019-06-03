@@ -1,4 +1,5 @@
 #include "PCN.h"
+#include "PCN_API.h"
 
 struct Window2
 {
