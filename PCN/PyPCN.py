@@ -4,6 +4,7 @@ import cv2
 import numpy as np
 import sys
 import os
+import time
 from ipdb import set_trace as dbg
 from enum import IntEnum
 
@@ -18,7 +19,7 @@ class CWindow(Structure):
                 ("width", c_int),
                 ("angle", c_int),
                 ("score", c_float),
-                ("points",CPoint*14)]
+                ("points",CPoint*FEAT_POINTS)]
 
 class FeatEnam(IntEnum):
     CHIN_0 = 0
@@ -37,8 +38,7 @@ class FeatEnam(IntEnum):
     MOUTH_RIGHT = 13
     FEAT_POINTS = 14
 
-
-lib = CDLL("libPCN.so", RTLD_GLOBAL)
+lib = CDLL("/usr/local/lib/libPCN.so")
 
 init_detector = lib.init_detector
 #void *init_detector(const char *detection_model_path, 
@@ -67,32 +67,42 @@ free_faces.argtypes= [c_void_p]
 free_detector = lib.free_detector
 free_detector.argtypes= [c_void_p]
 
+CYAN=(255,255,0)
+BLUE=(255,0,0)
+RED=(0,0,255)
+GREEN=(0,255,0)
+YELLOW=(0,255,255)
+
 def DrawFace(win,img):
-    x1 = win.x;
-    y1 = win.y;
-    x2 = win.width + win.x - 1;
-    y2 = win.width + win.y - 1;
-    centerX = (x1 + x2) / 2;
-    centerY = (y1 + y2) / 2;
+    width = 2
+    x1 = win.x
+    y1 = win.y
+    x2 = win.width + win.x - 1
+    y2 = win.width + win.y - 1
+    centerX = (x1 + x2) / 2
+    centerY = (y1 + y2) / 2
     angle = win.angle
     R = cv2.getRotationMatrix2D((centerX,centerY),angle,1)
     pts = np.array([[x1,y1,1],[x1,y2,1],[x2,y2,1],[x2,y1,1]], np.int32)
     pts = (pts @ R.T).astype(int) #Rotate points
     pts = pts.reshape((-1,1,2))
-    cv2.polylines(img,[pts],True,(0,0,255))
-    cv2.putText(img,"Face",(x1,y1), cv2.FONT_HERSHEY_SIMPLEX, 1,(255,255,255),2,cv2.LINE_AA)
-
+    cv2.polylines(img,[pts],True,CYAN,width)
+    cv2.line(img, (pts[0][0][0],pts[0][0][1]), (pts[3][0][0],pts[3][0][1]), BLUE, width)
+  
 def DrawPoints(win,img):
+    width = 3
     f = FeatEnam.NOSE
-    cv2.circle(img,(win.points[f].x,win.points[f].y),2,(255, 153, 255))
+    cv2.circle(img,(win.points[f].x,win.points[f].y),width,GREEN,-1)
     f = FeatEnam.EYE_LEFT
-    cv2.circle(img,(win.points[f].x,win.points[f].y),2,(0,255,255))
+    cv2.circle(img,(win.points[f].x,win.points[f].y),width,YELLOW,-1)
     f = FeatEnam.EYE_RIGHT
-    cv2.circle(img,(win.points[f].x,win.points[f].y),2,(0,255,255))
+    cv2.circle(img,(win.points[f].x,win.points[f].y),width,YELLOW,-1)
     f = FeatEnam.MOUTH_LEFT
-    cv2.circle(img,(win.points[f].x,win.points[f].y),2,(0,255,0))
+    cv2.circle(img,(win.points[f].x,win.points[f].y),width,RED,-1)
     f = FeatEnam.MOUTH_RIGHT
-    cv2.circle(img,(win.points[f].x,win.points[f].y),2,(0,255,0))
+    cv2.circle(img,(win.points[f].x,win.points[f].y),width,RED,-1)
+    for i in range(8):
+        cv2.circle(img,(win.points[i].x,win.points[i].y),width,BLUE,-1)
 
 def SetThreadCount(threads):
     os.environ['OMP_NUM_THREADS'] = str(threads)
@@ -107,37 +117,41 @@ if __name__=="__main__":
         cap = cv2.VideoCapture(sys.argv[1])
     else:
         cap = cv2.VideoCapture(0)
-    #cap = cv2.VideoCapture('udp://127.0.0.1:2234',cv2.CAP_FFMPEG)
-    detection_model_path = c_str("../model/PCN.caffemodel")
-    pcn1_proto = c_str("../model/PCN-1.prototxt")
-    pcn2_proto = c_str("../model/PCN-2.prototxt")
-    pcn3_proto = c_str("../model/PCN-3.prototxt")
-    tracking_model_path = c_str("../model/PCN-Tracking.caffemodel")
-    tracking_proto = c_str("../model/PCN-Tracking.prototxt")
+    path = '/usr/local/share/pcn/'
+    detection_model_path = c_str(path + "PCN.caffemodel")
+    pcn1_proto = c_str(path + "PCN-1.prototxt")
+    pcn2_proto = c_str(path + "PCN-2.prototxt")
+    pcn3_proto = c_str(path + "PCN-3.prototxt")
+    tracking_model_path = c_str(path + "PCN-Tracking.caffemodel")
+    tracking_proto = c_str(path + "PCN-Tracking.prototxt")
 
     detector = init_detector(detection_model_path,pcn1_proto,pcn2_proto,pcn3_proto,
 			tracking_model_path,tracking_proto, 
-			15,1.45,0.5,0.5,0.98,30,0.9,1)
+			40,1.45,0.5,0.5,0.98,30,0.9,1)
 
-    width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)   # float
-    height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT) # float
-    fps = cap.get(cv2.CAP_PROP_FPS) # float
+    width = cap.get(cv2.CAP_PROP_FRAME_WIDTH) 
+    height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT) 
+    fps = cap.get(cv2.CAP_PROP_FPS) 
     while cap.isOpened():
         ret, frame = cap.read()
         if frame.shape[0] == 0:
             break
+        start = time.time()
         face_count = c_int(0)
         raw_data = frame.ctypes.data_as(POINTER(c_ubyte))
+        
         windows = detect_faces(detector, raw_data, 
                 int(height), int(width),
                 pointer(face_count))
+        end = time.time()
         for i in range(face_count.value):
             DrawFace(windows[i],frame)
             DrawPoints(windows[i],frame)
         free_faces(windows)
-
-        cv2.imshow('window', frame)
-        if cv2.waitKey(10) & 0xFF == ord('q'):
+        fps = int(1 / (end - start))
+        cv2.putText(frame, str(fps) + "fps", (20, 45), 4, 1, (0, 0, 125))
+        cv2.imshow('PCN', frame)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
     free_detector(detector)

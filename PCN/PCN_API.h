@@ -19,7 +19,6 @@ struct CWindow{
 		width = win.width;
 		angle = win.angle;
 		score = win.score;
-		//TODO memcpy..
 		for (int f=0; f< win.points14.size(); f++){
 			points[f].x = win.points14[f].x;
 			points[f].y = win.points14[f].y;
