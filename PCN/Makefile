@@ -6,14 +6,15 @@ TARGETS=video picture fddb pcn_api_test
 LIB=libPCN.so
 LIB_DIR=/usr/local/lib
 SHARE_DIR=/usr/local/share/pcn
+CAFFEROOT=/usr/local/lib
 
 all: $(TARGETS)
 
 $(LIB): PCN.cpp
-	$(CC) -shared -fPIC -o $@ $^ ${CXX_FLAGS} ${LD_FLAGS}  ${DEBUG}
+	$(CC) -shared -fPIC -o $@ $^ ${CXX_FLAGS} ${LD_FLAGS} ${DEBUG} -I ${CAFFEROOT}/include/ -I ${CAFFEROOT}/.build_release/src/ -L ${CAFFEROOT}/build/lib/
 
 $(TARGETS): $(LIB)
-	$(CC) -o $@ $@.cpp $(LIB) -std=c++11 -D CPU_ONLY ${LD_FLAGS} ${DEBUG} 
+	$(CC) -o $@ $@.cpp $(LIB) ${CXX_FLAGS} ${LD_FLAGS} ${DEBUG} -I ${CAFFEROOT}/include/ -I ${CAFFEROOT}/.build_release/src/ -L ${CAFFEROOT}/build/lib/
 
 install:
 	mkdir -p $(SHARE_DIR)
@@ -22,4 +23,3 @@ install:
 
 clean:
 	rm -rf $(TARGETS) $(LIB)
-
