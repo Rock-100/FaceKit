@@ -59,6 +59,11 @@ detect_faces = lib.detect_faces
 detect_faces.argtypes = [c_void_p, POINTER(c_ubyte),c_size_t,c_size_t,POINTER(c_int)]
 detect_faces.restype = POINTER(CWindow)
 
+#CWindow* detect_track_faces(void* pcn, unsigned char* raw_img,size_t rows, size_t cols, int *lwin)
+detect_track_faces = lib.detect_track_faces
+detect_track_faces.argtypes = [c_void_p, POINTER(c_ubyte),c_size_t,c_size_t,POINTER(c_int)]
+detect_track_faces.restype = POINTER(CWindow)
+
 #void free_faces(CWindow* wins)
 free_faces = lib.free_faces
 free_faces.argtypes= [c_void_p]
@@ -90,7 +95,7 @@ def DrawFace(win,img):
     cv2.line(img, (pts[0][0][0],pts[0][0][1]), (pts[3][0][0],pts[3][0][1]), BLUE, width)
   
 def DrawPoints(win,img):
-    width = 3
+    width = 2
     f = FeatEnam.NOSE
     cv2.circle(img,(win.points[f].x,win.points[f].y),width,GREEN,-1)
     f = FeatEnam.EYE_LEFT
@@ -110,13 +115,11 @@ def SetThreadCount(threads):
 def c_str(str_in):
     return c_char_p(str_in.encode('utf-8'))
 
+video_flag = 0
+
 if __name__=="__main__":
 
     SetThreadCount(1)
-    if len(sys.argv)==2:
-        cap = cv2.VideoCapture(sys.argv[1])
-    else:
-        cap = cv2.VideoCapture(0)
     path = '/usr/local/share/pcn/'
     detection_model_path = c_str(path + "PCN.caffemodel")
     pcn1_proto = c_str(path + "PCN-1.prototxt")
@@ -124,35 +127,54 @@ if __name__=="__main__":
     pcn3_proto = c_str(path + "PCN-3.prototxt")
     tracking_model_path = c_str(path + "PCN-Tracking.caffemodel")
     tracking_proto = c_str(path + "PCN-Tracking.prototxt")
-
-    detector = init_detector(detection_model_path,pcn1_proto,pcn2_proto,pcn3_proto,
-			tracking_model_path,tracking_proto, 
-			40,1.45,0.5,0.5,0.98,30,0.9,1)
-
-    width = cap.get(cv2.CAP_PROP_FRAME_WIDTH) 
-    height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT) 
-    fps = cap.get(cv2.CAP_PROP_FPS) 
-    while cap.isOpened():
-        ret, frame = cap.read()
-        if frame.shape[0] == 0:
-            break
-        start = time.time()
-        face_count = c_int(0)
-        raw_data = frame.ctypes.data_as(POINTER(c_ubyte))
-        
-        windows = detect_faces(detector, raw_data, 
-                int(height), int(width),
-                pointer(face_count))
-        end = time.time()
-        for i in range(face_count.value):
-            DrawFace(windows[i],frame)
-            DrawPoints(windows[i],frame)
-        free_faces(windows)
-        fps = int(1 / (end - start))
-        cv2.putText(frame, str(fps) + "fps", (20, 45), 4, 1, (0, 0, 125))
-        cv2.imshow('PCN', frame)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
+    if video_flag:
+        cap = cv2.VideoCapture(0)
+        detector = init_detector(detection_model_path,pcn1_proto,pcn2_proto,pcn3_proto,
+		    	tracking_model_path,tracking_proto, 
+		    	40,1.45,0.5,0.5,0.98,30,0.9,1)
+        width = cap.get(cv2.CAP_PROP_FRAME_WIDTH) 
+        height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT) 
+        fps = cap.get(cv2.CAP_PROP_FPS) 
+        while cap.isOpened():
+            ret, frame = cap.read()
+            if frame.shape[0] == 0:
+                break
+            start = time.time()
+            face_count = c_int(0)
+            raw_data = frame.ctypes.data_as(POINTER(c_ubyte))
+            windows = detect_track_faces(detector, raw_data, 
+                    int(height), int(width),
+                    pointer(face_count))
+            end = time.time()
+            for i in range(face_count.value):
+                DrawFace(windows[i],frame)
+                DrawPoints(windows[i],frame)
+            free_faces(windows)
+            fps = int(1 / (end - start))
+            cv2.putText(frame, str(fps) + "fps", (20, 45), 4, 1, (0, 0, 125))
+            cv2.imshow('PCN', frame)
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+    else:
+        detector = init_detector(detection_model_path,pcn1_proto,pcn2_proto,pcn3_proto,
+		    	tracking_model_path,tracking_proto, 
+		    	40,1.45,0.5,0.5,0.98,30,0.9,0)
+        for i in range(1, 27):
+            frame = cv2.imread("imgs/" + str(i) + ".jpg")
+            start = time.time()
+            face_count = c_int(0)
+            raw_data = frame.ctypes.data_as(POINTER(c_ubyte))
+            windows = detect_faces(detector, raw_data, 
+                    frame.shape[0], frame.shape[1],
+                    pointer(face_count))
+            end = time.time()
+            print(i, end - start, "ms")
+            for i in range(face_count.value):
+                DrawFace(windows[i],frame)
+                DrawPoints(windows[i],frame)
+            free_faces(windows)
+            cv2.imshow('PCN', frame)
+            cv2.waitKey()
 
     free_detector(detector)
 
