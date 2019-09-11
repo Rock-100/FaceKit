@@ -137,7 +137,7 @@ if __name__=="__main__":
         fps = cap.get(cv2.CAP_PROP_FPS) 
         while cap.isOpened():
             ret, frame = cap.read()
-            if frame.shape[0] == 0:
+            if ret == False:
                 break
             start = time.time()
             face_count = c_int(0)
