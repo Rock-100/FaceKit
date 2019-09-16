@@ -168,7 +168,7 @@ if __name__=="__main__":
                     frame.shape[0], frame.shape[1],
                     pointer(face_count))
             end = time.time()
-            print(i, end - start, "ms")
+            print(i, end - start, "s")
             for i in range(face_count.value):
                 DrawFace(windows[i],frame)
                 DrawPoints(windows[i],frame)
