@@ -1,9 +1,10 @@
-### [Real-Time Rotation-Invariant Face Detection and Tracking](PCN/) (200FPS on CPU)
-Click the image to watch the video!
+### [Real-Time Rotation-Invariant Face Detection and Tracking](PCN/)
 
-[![video demo 1](https://github.com/Jack-CV/FaceKit/blob/master/PCN/result/f.jpg)](https://v.youku.com/v_show/id_XNDE5MDU4MDIwNA==.html?spm=a2h3j.8428770.3416059.1)
+<img src='PCN/result/tracking.gif' width=600 height=450>
 
-[![video demo 2](https://github.com/Jack-CV/FaceKit/blob/master/PCN/result/y.jpg)](https://v.youku.com/v_show/id_XNDE5MDU4MDU5Ng==.html?spm=a2h3j.8428770.3416059.1)
+<img src='PCN/result/f.jpg' width=800 height=450>
+
+<img src='PCN/result/y.jpg' width=800 height=450>
 
 ### [Face Warping](Warping/)
 
