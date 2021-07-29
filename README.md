@@ -2,9 +2,7 @@
 
 <img src='PCN/result/tracking.gif' width=600 height=450>
 
-<img src='PCN/result/f.jpg' width=800 height=450>
-
-<img src='PCN/result/y.jpg' width=800 height=450>
+<img src='PCN/result/y.gif' width=600 height=320>
 
 ### [Face Warping](Warping/)
 
@@ -25,6 +23,4 @@ This code is distributed under the [BSD 2-Clause license](LICENSE).
 ### Contact
 
 Xuepeng Shi, xuepeng.shi@vipl.ict.ac.cn
-
-Shuzhe Wu, shuzhe.wu@vipl.ict.ac.cn
 
