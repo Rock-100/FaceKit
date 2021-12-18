@@ -86,7 +86,7 @@ python3 PyPCN.py
 
 If you find PCN useful in your research, please consider citing:
 
-    @inproceedings{shiCVPR18pcn,
+    @inproceedings{PCN_CVPR18,
         Author = {Xuepeng Shi and Shiguang Shan and Meina Kan and Shuzhe Wu and Xilin Chen},
         Title = {Real-Time Rotation-Invariant Face Detection with Progressive Calibration Networks},
         Booktitle = {The IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
