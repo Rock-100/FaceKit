@@ -38,7 +38,7 @@ See [picture.cpp](picture.cpp) and [video.cpp](video.cpp) for details. If you wa
 
 ### Links
 
-* [paper](https://arxiv.org/pdf/1804.06039.pdf)
+* [paper](https://arxiv.org/abs/1804.06039)
 
 ### Prerequisites
 
