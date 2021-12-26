@@ -22,5 +22,5 @@ This code is distributed under the [BSD 2-Clause license](LICENSE).
 
 ### Contact
 
-Xuepeng Shi, xuepeng.shi@vipl.ict.ac.cn
+xuepeng.shi@vipl.ict.ac.cn
 
