@@ -19,8 +19,3 @@
 ### License
 
 This code is distributed under the [BSD 2-Clause license](LICENSE).
-
-### Contact
-
-xuepeng.shi@vipl.ict.ac.cn
-
